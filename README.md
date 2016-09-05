@@ -24,6 +24,8 @@ The app uses:<br><br>
  · **[Kingfisher](https://github.com/onevcat/Kingfisher) to cache images**<br>
  · **External DataSource** with DataType, DataSource, SourceType inspired by [BlendingCultures](https://realm.io/news/tryswift-daniel-steinberg-blending-cultures/)<br>
  · **Tests** (with XCTest, [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble))<br>
+ · **[DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)** to show something when the view has no content<br>
+ · **[SVProgressHUD](https://github.com/SVProgressHUD/SVProgressHUD)** to show the progress<br>
 
 ##Requirements
 - iOS 9.0+
