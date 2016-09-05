@@ -10,13 +10,14 @@ import UIKit
 import SnapKit
 import Foundation
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CharactersTableViewController: UIViewController, UITableViewDelegate{
     
     var didSetupConstraints = false
     
     let tableView: UITableView = UITableView()
     let cellIdentifier = "CharacterCell"
-    var characters: [CharacterModel] = []
+    var charactersData = CharacterDataType()
+    private var dataSource = CharacterDataSource()
     
     // MARK: LifeCycle
     override func viewDidLoad() {
@@ -60,8 +61,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func setupTableView() -> Void {
+        tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.dataSource = self
         tableView.reloadData()
     }
     
@@ -71,7 +72,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         ApiManager.sharedInstance.getCharacters(
             {(result) in
                 if let listChar = result.value?.characters {
-                    self.characters = listChar
+                    self.charactersData = CharacterDataType(characters:listChar)
+                    self.dataSource.dataObject = self.charactersData
                     self.setupTableView()
                 }
             })
@@ -80,23 +82,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    // MARK: UITableViewDataSource
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return characters.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let object = self.characters[indexPath.row]
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as? CharacterCell
-            else { fatalError("Unexpected cell type at \(indexPath)") }
-        cell.configureCell(object)
-        return cell
-    }
+    // MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return CharacterCell.preferredHeight();
     }
     
 }
-

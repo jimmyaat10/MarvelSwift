@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        let controller = ViewController();
+        let controller = CharactersTableViewController();
         let navigationController:UINavigationController = UINavigationController(rootViewController: controller);
         
         self.window!.rootViewController = navigationController;

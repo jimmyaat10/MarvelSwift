@@ -18,10 +18,11 @@ $ pod install
 
 ##Introduction
 The app uses:<br><br>
- · **Alamofire**. API inspired by [grokSwift](https://github.com/cmoulton/grokSwiftREST_v1.1/)<br>
- · **SwiftyJSON** for the Models<br>
- · **Autolayout - SnapKit**<br>
- · **Kingfisher** to cache images<br>
+ · **[Alamofire](https://github.com/Alamofire/Alamofire)**. API inspired by [grokSwift](https://github.com/cmoulton/grokSwiftREST_v1.1/)<br>
+ · **[SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)** for the Models<br>
+ · **Autolayout - [SnapKit](https://github.com/SnapKit/SnapKit)** <br>
+ · **[Kingfisher](https://github.com/onevcat/Kingfisher) to cache images**<br>
+ · **External DataSource** with DataType, DataSource, SourceType inspired by [BlendingCultures](https://realm.io/news/tryswift-daniel-steinberg-blending-cultures/)<br>
  · **Tests** (with XCTest, [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble))<br>
 
 ##Requirements
