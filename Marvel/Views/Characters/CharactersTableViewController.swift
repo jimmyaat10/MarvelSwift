@@ -19,7 +19,7 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
     let tableView: UITableView = UITableView()
     let cellIdentifier = "CharacterCell"
     var charactersData = CharacterDataType()
-    private var dataSource = CharacterDataSource()
+    var dataSource = CharacterDataSource()
     
     // MARK: LifeCycle
     override func viewDidLoad() {
