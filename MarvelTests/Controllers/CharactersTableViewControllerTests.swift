@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import Alamofire
 
 @testable import Marvel
 
@@ -26,31 +25,4 @@ class CharactersTableViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testGetCharacters() {
-        var numberOfItems = 0
-        
-        let expectation = expectationWithDescription("Get Characters")
-        ApiManager.sharedInstance.getCharacters(
-            {(result) in
-                if let listChar = result.value?.characters {
-                    self.charactersTableViewController.charactersData = CharacterDataType(characters:listChar)
-                    self.charactersTableViewController.dataSource.dataObject = self.charactersTableViewController.charactersData
-                    
-                    numberOfItems = self.charactersTableViewController.charactersData.numberOfItems
-                    XCTAssertEqual(numberOfItems, 20, "When the WS success, the number of items should be 20")
-                    expectation.fulfill()
-                }
-            })
-        {(error) in
-            numberOfItems = 0
-            XCTAssertEqual(numberOfItems, 0, "When the WS fails, the number of items should be 0")
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(10) { error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
-    }
 }
