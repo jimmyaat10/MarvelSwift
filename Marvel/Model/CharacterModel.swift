@@ -23,16 +23,16 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
     let eventsKey        = "events"
     let urlsKey          = "urls"
     
-    var id: String
-    var name: String
-    var desc: String
+    var id: String!
+    var name: String!
+    var desc: String!
     var modifiedAt: NSDate?
     var thumbnail: ThumbnailModel?
     var resourceURI: String
-    var comics: [ListModel]?
-    var series: [ListModel]?
-    var stories: [ListModel]?
-    var events: [ListModel]?
+    var comics: ListModel?
+    var series: ListModel?
+    var stories: ListModel?
+    var events: ListModel?
     var urls: [UrlModel]?
     
     static let sharedDateFormatter = CharacterModel.dateFormatter()
@@ -57,38 +57,22 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
         
         self.resourceURI = json[resourceURIKey].stringValue
         
-        self.comics = [ListModel]()
-        if let comicsJSON = json[comicsKey].dictionary {
-            for (_, comicJSON) in comicsJSON {
-                if let comic = ListModel(json: comicJSON) {
-                    self.comics?.append(comic)
-                }
-            }
+        if let comicJSON = json[comicsKey].dictionary {
+            self.comics = ListModel(json: JSON(comicJSON))
         }
-        self.series = [ListModel]()
+        
         if let seriesJSON = json[seriesKey].dictionary {
-            for (_, serieJSON) in seriesJSON {
-                if let serie = ListModel(json: serieJSON) {
-                    self.series?.append(serie)
-                }
-            }
+            self.series = ListModel(json: JSON(seriesJSON))
         }
-        self.stories = [ListModel]()
+        
         if let storiesJSON = json[storiesKey].dictionary {
-            for (_, storyJSON) in storiesJSON {
-                if let story = ListModel(json: storyJSON) {
-                    self.stories?.append(story)
-                }
-            }
+            self.stories = ListModel(json: JSON(storiesJSON))
         }
-        self.events = [ListModel]()
+        
         if let eventsJSON = json[eventsKey].dictionary {
-            for (_, eventJSON) in eventsJSON {
-                if let event = ListModel(json: eventJSON) {
-                    self.events?.append(event)
-                }
-            }
+            self.events = ListModel(json: JSON(eventsJSON))
         }
+        
         self.urls = [UrlModel]()
         if let urlsJSON = json[urlsKey].dictionary {
             for (_, urlJSON) in urlsJSON {
