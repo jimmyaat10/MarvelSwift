@@ -2,7 +2,7 @@
 
 
 ##DEMO
-![DemoVideo](https://raw.githubusercontent.com/jimmyaat10/MarvelSwift/master/demo/demoVideo.mov)
+![DemoVideo](https://raw.githubusercontent.com/jimmyaat10/MarvelSwift/master/demo/demoVideo.gif)
 
 ##Info
 
