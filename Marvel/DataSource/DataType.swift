@@ -10,6 +10,7 @@ import UIKit
 
 protocol DataType {
     var numberOfItems: Int { get }
+    mutating func filterCharacters(with text:String)
 //    func addNewItemAtIndex(index: Int) -> Self
 //    func deleteItemAtIndex(index: Int) -> Self
 //    func moveItem(fromIndex: Int, toIndex: Int) -> Self

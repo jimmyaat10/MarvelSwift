@@ -2,7 +2,7 @@
 
 
 ##DEMO
-![DemoVideo](https://raw.githubusercontent.com/jimmyaat10/MarvelSwift/master/demo/demoVideo.gif)
+![DemoVideo](https://raw.githubusercontent.com/jimmyaat10/MarvelSwift/master/demo/demoVideo.mov)
 
 ##Info
 
@@ -23,6 +23,7 @@ The app uses:<br><br>
  · **Autolayout - [SnapKit](https://github.com/SnapKit/SnapKit)** <br>
  · **[Kingfisher](https://github.com/onevcat/Kingfisher) to cache images**<br>
  · **External DataSource** with DataType, DataSource, SourceType inspired by [BlendingCultures](https://realm.io/news/tryswift-daniel-steinberg-blending-cultures/)<br>
+ · **ViewModel**<br>
  · **Tests** (with XCTest, [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble))<br>
  · **[DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)** to show something when the view has no content<br>
  · **[SVProgressHUD](https://github.com/SVProgressHUD/SVProgressHUD)** to show the progress<br>

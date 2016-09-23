@@ -32,5 +32,12 @@ struct CharacterDataType: DataType {
         return characters[index]
     }
     
+    /** PRE: text.characters.count > 0 **/
+    mutating func filterCharacters(with text:String)
+    {
+        let filteredArray = self.characters.filter() { $0.name.rangeOfString(text) != nil }
+        self.characters = filteredArray;
+    }
+    
 }
 

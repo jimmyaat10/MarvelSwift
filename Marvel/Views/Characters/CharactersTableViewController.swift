@@ -12,13 +12,14 @@ import Foundation
 import SVProgressHUD
 import DZNEmptyDataSet
 
-class CharactersTableViewController: UIViewController, UITableViewDelegate{
+class CharactersTableViewController: UIViewController{
     
     var didSetupConstraints = false
     
     let tableView: UITableView = UITableView()
+    let searchController = UISearchController(searchResultsController: nil)
     let cellIdentifier = "CharacterCell"
-    var charactersData = CharacterDataType()
+    let viewModel = CharactersTableViewModel()
     var dataSource = CharacterDataSource()
     
     // MARK: LifeCycle
@@ -57,63 +58,111 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
     // MARK: Setup Methods
     
     private func setupView() {
-        self.title = "Characters"
-        view.backgroundColor = UIColor.whiteColor()
-        view.addSubview(tableView)
-        tableView.registerClass(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 120
-        tableView.emptyDataSetSource = self
-        tableView.emptyDataSetDelegate = self
-        tableView.tableFooterView = UIView()
+        self.title = self.viewModel.viewTitle
+        view.backgroundColor = self.viewModel.viewBackgroundColor
+
+        setupTableView()
         
         view.setNeedsUpdateConstraints()
     }
     
     private func setupTableView() {
-        tableView.dataSource = dataSource
+        tableView.registerClass(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 120
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.dataSource = self.dataSource
         tableView.delegate = self
-        tableView.tableFooterView = nil
-        tableView.reloadData()
+        tableView.tableFooterView = UIView()
+        view.addSubview(tableView)
+    }
+    
+    private func setupSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     // MARK: Load Methods
     
     private func simulateLoadDataThatFails() {
         SVProgressHUD.showWithStatus("Loading")
-        NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(CharactersTableViewController.dismissProgressHud), userInfo: nil, repeats: true)
-
+        viewModel.simulateLoadDataThatFails { (completion) in
+            if completion {
+                self.dismissProgressHud()
+            }
+        }
     }
     
     private func loadData() {
-        SVProgressHUD.showWithStatus("Loading")
-        ApiManager.sharedInstance.getCharacters(
-            {(result) in
+        if viewModel.arrayCharacters.numberOfItems > 0 {
+            self.dataSource.dataObject = self.viewModel.arrayCharacters
+            self.searchController.active = false
+            self.tableView.reloadData()
+        } else {
+            SVProgressHUD.showWithStatus("Loading")
+            viewModel.loadData({ (result) in
                 SVProgressHUD.dismiss()
-                if let listChar = result.value?.characters {
-                    self.charactersData = CharacterDataType(characters:listChar)
-                    self.dataSource.dataObject = self.charactersData
-                    self.setupTableView()
-                }
-            })
-            {(error) in
+                self.dataSource.dataObject = self.viewModel.arrayCharacters
+                self.setupSearchBar()
+                self.tableView.reloadData()
+            }) { (error) in
                 SVProgressHUD.dismiss()
-                print("Error: ", error);
+            }
         }
     }
     
     // MARK : Selector Methods
     
+    func emptyDataSetTapped() {
+        loadData()
+    }
+    
     func dismissProgressHud() {
         SVProgressHUD.dismiss()
     }
     
-    // MARK: UITableViewDelegate
-    
+}
+
+extension CharactersTableViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return CharacterCell.preferredHeight();
     }
-    
+}
+
+extension CharactersTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        // Do nothing for the moment
+    }
+}
+
+extension CharactersTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        self.viewModel.filterContentForSearchText(searchBar.text!, completion: { (resultArray) in
+            self.dataSource.dataObject = resultArray
+            self.tableView.reloadData()
+            }) { (error, defaultResultArray) in
+                switch (error.code){
+                case CharactersErrorCode.SearchTextEmpty.rawValue:
+                    print("Text empty, reload defaultResult")
+                    self.dataSource.dataObject = defaultResultArray
+                    self.tableView.reloadData()
+                    break;
+                case CharactersErrorCode.SearchNoResultsFound.rawValue:
+                    self.dataSource.dataObject = CharacterDataType()
+                    self.tableView.reloadData()
+                    break;
+                default:
+                    break;
+                }
+        }
+    }
 }
 
 extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
@@ -121,7 +170,7 @@ extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     //MARK : DZNEmptyDataSetSource
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let textEmpty = "To show a list of characters, tap here" as NSString
+        let textEmpty = "No results. Tap here to reload" as NSString
         let textRange = NSMakeRange(0, textEmpty.length)
         let attributedTitle = NSMutableAttributedString(string: textEmpty as String)
         attributedTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: textRange)
@@ -157,6 +206,6 @@ extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     }
     
     func emptyDataSetDidTapView(scrollView: UIScrollView!) {
-        self.loadData()
+        self.emptyDataSetTapped()
     }
 }

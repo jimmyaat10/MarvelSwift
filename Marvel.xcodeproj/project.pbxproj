@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		63442CED625F361DE4B47D94 /* Pods_MarvelTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8382822B002485614C4FCCF8 /* Pods_MarvelTests.framework */; };
 		920415841D73030B00CA249C /* CharacterModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920415831D73030B00CA249C /* CharacterModelTests.swift */; };
+		9229090D1D9517FF00B30EA7 /* CharactersTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9229090C1D9517FF00B30EA7 /* CharactersTableViewModel.swift */; };
 		9232A12D1D7D527D0091157D /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9232A12C1D7D527D0091157D /* DataType.swift */; };
 		9232A12F1D7D52BF0091157D /* SourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9232A12E1D7D52BF0091157D /* SourceType.swift */; };
 		9232A1311D7D536A0091157D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9232A1301D7D536A0091157D /* DataSource.swift */; };
@@ -59,6 +60,7 @@
 		920415791D7302E000CA249C /* MarvelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarvelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9204157D1D7302E000CA249C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		920415831D73030B00CA249C /* CharacterModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterModelTests.swift; sourceTree = "<group>"; };
+		9229090C1D9517FF00B30EA7 /* CharactersTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharactersTableViewModel.swift; sourceTree = "<group>"; };
 		9232A12C1D7D527D0091157D /* DataType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		9232A12E1D7D52BF0091157D /* SourceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceType.swift; sourceTree = "<group>"; };
 		9232A1301D7D536A0091157D /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				923654A81D6C392D005095D5 /* CharactersTableViewController.swift */,
 				9232A1331D7D549A0091157D /* CharacterDataSource.swift */,
 				9232A1351D7D55010091157D /* CharacterDataType.swift */,
+				9229090C1D9517FF00B30EA7 /* CharactersTableViewModel.swift */,
 			);
 			path = Characters;
 			sourceTree = "<group>";
@@ -534,6 +537,7 @@
 				92E09BDE1D6CAC250079897F /* ItemModel.swift in Sources */,
 				92E09BD11D6C56ED0079897F /* NSString+Extensions.swift in Sources */,
 				92E09BD41D6C58E30079897F /* AlamofireRequest+JSONSerializable.swift in Sources */,
+				9229090D1D9517FF00B30EA7 /* CharactersTableViewModel.swift in Sources */,
 				92E09BE81D6F561E0079897F /* CharacterCell.swift in Sources */,
 				92E09BE01D6CAD2D0079897F /* ListModel.swift in Sources */,
 				9232A12F1D7D52BF0091157D /* SourceType.swift in Sources */,
