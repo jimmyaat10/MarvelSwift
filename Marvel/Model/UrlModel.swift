@@ -6,10 +6,10 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
+import RealmSwift
 
-final class UrlModel: NSObject, ResponseJSONObjectSerializable {
+final class UrlModel: Object, ResponseJSONObjectSerializable {
     
     let urlKey      = "url"
     let typeKey     = "type"
@@ -17,7 +17,12 @@ final class UrlModel: NSObject, ResponseJSONObjectSerializable {
     var url: String?
     var type: String?
     
-    required init?(json: JSON) {
+    override class func primaryKey() -> String? {
+        return "url"
+    }
+    
+    required convenience init?(json: JSON) {
+        self.init()
         self.url = json[urlKey].string
         self.type = json[typeKey].string
     }

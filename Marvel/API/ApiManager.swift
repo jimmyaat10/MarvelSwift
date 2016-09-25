@@ -28,12 +28,16 @@ class ApiManager {
     }
     
     func getCharacters(success:
-        (Result<ListCharacterModel, NSError>) -> Void, fail:(error:NSError)->Void) {
+        () -> Void, fail:(error:NSError)->Void) {
         Alamofire.request(Router.GetCharacters())
             .responseObject { (response:Response<ListCharacterModel, NSError>) in
                 switch response.result {
-                    case .Success( _):
-                        success(response.result)
+                    case .Success(let characters):
+                        PersistenceManager.sharedInstance.persistCharacters(characters.characters, success: {
+                                success()
+                            }, fail: { (error) in
+                                fail(error: error)
+                        })
                     case .Failure(let error):
                         fail(error: error)
                 }

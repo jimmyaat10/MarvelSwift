@@ -7,36 +7,41 @@
 //
 
 import UIKit
+import RealmSwift
 
 struct CharacterDataType: DataType {
     
-    private var characters: [CharacterModel] = []
+    private var characters: Results<CharacterModel>?
     
     init(){
         
     }
     
-    init(characters: [CharacterModel]) {
+    init(characters: Results<CharacterModel>) {
         self.characters = characters
     }
     
     var numberOfItems: Int {
-        return characters.count
+        if let characters = characters {
+            return characters.count
+        } else {
+            return 0;
+        }
     }
     
     subscript(index: Int) -> CharacterModel {
-        return characters[index]
+        return characters![index]
     }
     
     func characterAtPosition(index: Int) -> CharacterModel {
-        return characters[index]
+        return characters![index]
     }
     
     /** PRE: text.characters.count > 0 **/
     mutating func filterCharacters(with text:String)
     {
-        let filteredArray = self.characters.filter() { $0.name.rangeOfString(text) != nil }
-        self.characters = filteredArray;
+        let predicate = NSPredicate(format: "name contains[c] '\(text)'")
+        self.characters = self.characters!.filter(predicate)
     }
     
 }

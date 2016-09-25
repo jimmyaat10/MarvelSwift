@@ -6,15 +6,16 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
-import Alamofire
+import UIKit
 
 enum CharactersErrorCode: Int {
     case SearchTextEmpty                 = 100
     case SearchNoResultsFound            = 200
 }
 
-class CharactersTableViewModel: NSObject {
+class CharactersTableViewModel {
+    
+    private let dataController = CharactersDataController()
     
     var arrayCharacters = CharacterDataType()
     var arraySearchCharacters = CharacterDataType()
@@ -31,17 +32,12 @@ class CharactersTableViewModel: NSObject {
     var offset: UInt = 0
     var canGetMoreCharacters: Bool = true
     
-    func loadData(success:
-        (Result<ListCharacterModel, NSError>) -> Void, fail:(error:NSError)->Void) {
-        ApiManager.sharedInstance.getCharacters(
-            {(result) in
-                if let listChar = result.value?.characters {
-                    self.arrayCharacters = CharacterDataType(characters:listChar)
-                    success(result)
-                }
-            })
-        {(error) in
-            fail(error:error)
+    func loadData(success:() -> Void, fail:(error:NSError)->Void) {
+        dataController.loadData({ (characters) in
+            self.arrayCharacters = characters
+            success()
+            }) { (error) in
+                fail(error:error)
         }
     }
     

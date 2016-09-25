@@ -6,10 +6,10 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
+import RealmSwift
 
-final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
+final class CharacterModel: Object, ResponseJSONObjectSerializable {
     
     let idKey            = "id"
     let nameKey          = "name"
@@ -23,23 +23,27 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
     let eventsKey        = "events"
     let urlsKey          = "urls"
     
-    var id: String!
-    var name: String!
-    var desc: String!
-    var modifiedAt: NSDate?
-    var thumbnail: ThumbnailModel?
-    var resourceURI: String
+    dynamic var id: String!
+    dynamic var name: String!
+    dynamic var desc: String!
+    dynamic var modifiedAt: NSDate?
+    dynamic var thumbnail: ThumbnailModel?
+    dynamic var resourceURI: String = ""
     var comics: ListModel?
     var series: ListModel?
     var stories: ListModel?
     var events: ListModel?
-    var urls: [UrlModel]?
+    var urls: List<UrlModel>?
     
     static let sharedDateFormatter = CharacterModel.dateFormatter()
     static let sharedDateFormatterToShow = CharacterModel.dateFormatterToShow()
     
-    required init(json: JSON){
+    override class func primaryKey() -> String? {
+        return "id"
+    }
     
+    required convenience init?(json: JSON){
+        self.init()
         self.id = json[idKey].stringValue
         self.name = json[nameKey].stringValue
         self.desc = json[descKey].stringValue
@@ -73,7 +77,7 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
             self.events = ListModel(json: JSON(eventsJSON))
         }
         
-        self.urls = [UrlModel]()
+        self.urls = List<UrlModel>()
         if let urlsJSON = json[urlsKey].dictionary {
             for (_, urlJSON) in urlsJSON {
                 if let url = UrlModel(json: urlJSON) {

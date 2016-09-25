@@ -6,10 +6,9 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
 
-final class ListModel: NSObject, ResponseJSONObjectSerializable {
+final class ListModel: ResponseJSONObjectSerializable {
     
     let availableKey        = "available"
     let collectionURIKey    = "collectionURI"

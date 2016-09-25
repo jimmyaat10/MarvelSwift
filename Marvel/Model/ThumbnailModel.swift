@@ -6,18 +6,23 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
+import RealmSwift
 
-final class ThumbnailModel: NSObject, ResponseJSONObjectSerializable {
+final class ThumbnailModel: Object, ResponseJSONObjectSerializable {
     
     let pathKey         = "path"
     let extensionKey    = "extension"
     
-    var path: String?
-    var ext: String?
+    dynamic var path: String?
+    dynamic var ext: String?
     
-    required init?(json: JSON) {
+    override class func primaryKey() -> String? {
+        return "path"
+    }
+    
+    required convenience init?(json: JSON) {
+        self.init()
         self.path = json[pathKey].string
         self.ext = json[extensionKey].string
     }
