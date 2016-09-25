@@ -8,7 +8,6 @@
 
 import UIKit
 import SnapKit
-import Foundation
 import SVProgressHUD
 import DZNEmptyDataSet
 
@@ -26,7 +25,7 @@ class CharactersTableViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        simulateLoadDataThatFails()
+        loadData()
     }
     
     override func updateViewConstraints() {
@@ -88,15 +87,6 @@ class CharactersTableViewController: UIViewController{
     
     // MARK: Load Methods
     
-    private func simulateLoadDataThatFails() {
-        SVProgressHUD.showWithStatus("Loading")
-        viewModel.simulateLoadDataThatFails { (completion) in
-            if completion {
-                self.dismissProgressHud()
-            }
-        }
-    }
-    
     private func loadData() {
         if viewModel.arrayCharacters.numberOfItems > 0 {
             self.dataSource.dataObject = self.viewModel.arrayCharacters
@@ -104,13 +94,17 @@ class CharactersTableViewController: UIViewController{
             self.tableView.reloadData()
         } else {
             SVProgressHUD.showWithStatus("Loading")
-            viewModel.loadData({ (result) in
+            viewModel.loadData({ 
                 SVProgressHUD.dismiss()
                 self.dataSource.dataObject = self.viewModel.arrayCharacters
                 self.setupSearchBar()
                 self.tableView.reloadData()
             }) { (error) in
                 SVProgressHUD.dismiss()
+                if error.code == 5000 {
+                    let messageError = error.userInfo[NSLocalizedFailureReasonErrorKey]!.description
+                    self.showAlertMessage(title:"Error", message:messageError)
+                }
             }
         }
     }
@@ -121,8 +115,13 @@ class CharactersTableViewController: UIViewController{
         loadData()
     }
     
-    func dismissProgressHud() {
-        SVProgressHUD.dismiss()
+    // MARK : Alert methods
+    
+    func showAlertMessage(title title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
 }
@@ -150,7 +149,6 @@ extension CharactersTableViewController: UISearchResultsUpdating {
             }) { (error, defaultResultArray) in
                 switch (error.code){
                 case CharactersErrorCode.SearchTextEmpty.rawValue:
-                    print("Text empty, reload defaultResult")
                     self.dataSource.dataObject = defaultResultArray
                     self.tableView.reloadData()
                     break;

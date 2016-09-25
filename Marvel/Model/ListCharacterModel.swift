@@ -6,10 +6,9 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
 
-final class ListCharacterModel: NSObject, ResponseJSONObjectSerializable {
+final class ListCharacterModel: ResponseJSONObjectSerializable {
     
     let dataKey     = "data"
     let resultsKey  = "results"
@@ -22,7 +21,7 @@ final class ListCharacterModel: NSObject, ResponseJSONObjectSerializable {
         if let charactersJSON = json[dataKey][resultsKey].array {
             for characterJSON in charactersJSON {
                 let character = CharacterModel(json: characterJSON)
-                self.characters?.append(character)
+                self.characters?.append(character!)
             }
         }
     }
