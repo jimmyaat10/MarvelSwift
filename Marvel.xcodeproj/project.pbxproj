@@ -26,6 +26,7 @@
 		923654A71D6C392D005095D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923654A61D6C392D005095D5 /* AppDelegate.swift */; };
 		923654A91D6C392D005095D5 /* CharactersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923654A81D6C392D005095D5 /* CharactersTableViewController.swift */; };
 		923654AE1D6C392D005095D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 923654AD1D6C392D005095D5 /* Assets.xcassets */; };
+		92607C211D990B7B00CC6884 /* CharactersDataControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92607C201D990B7B00CC6884 /* CharactersDataControllerSpec.swift */; };
 		92E09BC61D6C48580079897F /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BC51D6C48580079897F /* AppConstants.swift */; };
 		92E09BCC1D6C53E80079897F /* ApiRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BCB1D6C53E80079897F /* ApiRouter.swift */; };
 		92E09BCF1D6C56D10079897F /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BCE1D6C56D10079897F /* NSDate+Extensions.swift */; };
@@ -80,6 +81,7 @@
 		923654A81D6C392D005095D5 /* CharactersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersTableViewController.swift; sourceTree = "<group>"; };
 		923654AD1D6C392D005095D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		923654B21D6C392D005095D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92607C201D990B7B00CC6884 /* CharactersDataControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharactersDataControllerSpec.swift; path = DataController/CharactersDataControllerSpec.swift; sourceTree = "<group>"; };
 		92E09BC51D6C48580079897F /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		92E09BC71D6C4AF30079897F /* Marvel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Marvel-Bridging-Header.h"; path = "Marvel/Supporting Files/Marvel-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		92E09BCB1D6C53E80079897F /* ApiRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRouter.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				9232A1371D7DC8C30091157D /* Controllers */,
+				92607C1F1D990B1A00CC6884 /* DataController */,
 				9232A1401D7F11170091157D /* DataSource */,
 				9204157D1D7302E000CA249C /* Info.plist */,
 				9232A1261D74131E0091157D /* Models */,
@@ -287,6 +290,14 @@
 				9232A1271D7414560091157D /* Views */,
 			);
 			path = Marvel;
+			sourceTree = "<group>";
+		};
+		92607C1F1D990B1A00CC6884 /* DataController */ = {
+			isa = PBXGroup;
+			children = (
+				92607C201D990B7B00CC6884 /* CharactersDataControllerSpec.swift */,
+			);
+			name = DataController;
 			sourceTree = "<group>";
 		};
 		92E09BCA1D6C539C0079897F /* API */ = {
@@ -526,6 +537,7 @@
 			files = (
 				920415841D73030B00CA249C /* CharacterModelTests.swift in Sources */,
 				9232A1441D7F1C4B0091157D /* CharacterDataSourceTests.swift in Sources */,
+				92607C211D990B7B00CC6884 /* CharactersDataControllerSpec.swift in Sources */,
 				9232A1391D7DC8F20091157D /* CharactersTableViewControllerTests.swift in Sources */,
 				9232A13F1D7EEFBE0091157D /* ThumbnailModelSpec.swift in Sources */,
 				9232A1421D7F11470091157D /* CharacterDataSourceSpec.swift in Sources */,
