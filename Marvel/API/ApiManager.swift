@@ -43,18 +43,9 @@ class ApiManager {
         }
     }
     
-    func getCharacters(success: @escaping(Result<ListCharacterModel>) -> Void, fail:@escaping (_ error:NSError)->Void) {
+    func getCharacters(success: @escaping () -> Void, fail:@escaping (_ error:NSError)->Void) {
         Alamofire.request(Router.getCharacters())
             .responseJSON { (response) in
-                guard response.result.error == nil else {
-                    // got an error in getting the data, need to handle it
-                    print("error: \(response.result.error!)")
-                    fail(response.result.error! as NSError)
-                    return
-                }
-                
-                // make sure we got JSON and it's an array of dictionaries
-                
                 guard let json = response.result.value else {
                     print("not an array response!")
                     let failureReason = "JSON could not be serialized into response array"
@@ -65,8 +56,11 @@ class ApiManager {
                     return
                 }
                 let characters = ListCharacterModel.init(json: JSON(json))
-                success(.success(characters))
-                
+                PersistenceManager.sharedInstance.persistCharacters(characters: characters.characters, success: {
+                    success()
+                    }, fail: { (error) in
+                        fail(error)
+                })
         }
     }
     

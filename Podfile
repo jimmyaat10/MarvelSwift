@@ -10,6 +10,7 @@ target 'Marvel' do
     pod 'Kingfisher', '~> 3.0'
     pod 'SVProgressHUD', '~> 2.0'
     pod 'DZNEmptyDataSet', '~> 1.8'
+    pod 'RealmSwift'
 
     target 'MarvelTests' do
         inherit! :search_paths

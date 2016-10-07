@@ -4,7 +4,12 @@ PODS:
   - Kingfisher (3.1.3)
   - Nimble (5.0.0)
   - Quick (0.10.0)
-  - SnapKit (3.0.1)
+  - Realm (2.0.2):
+    - Realm/Headers (= 2.0.2)
+  - Realm/Headers (2.0.2)
+  - RealmSwift (2.0.2):
+    - Realm (= 2.0.2)
+  - SnapKit (3.0.2)
   - SVProgressHUD (2.0.3)
   - SwiftyJSON (3.1.1)
 
@@ -14,6 +19,7 @@ DEPENDENCIES:
   - Kingfisher (~> 3.0)
   - Nimble (~> 5.0)
   - Quick
+  - RealmSwift
   - SnapKit (~> 3.0)
   - SVProgressHUD (~> 2.0)
   - SwiftyJSON (~> 3.0)
@@ -24,10 +30,12 @@ SPEC CHECKSUMS:
   Kingfisher: 007f5851c18c81e7cc106c9cbac1bafea1cce5dc
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
-  SnapKit: f818b8326d45b4e1c777d0ab27b5c0a3624bfdeb
+  Realm: 0f5a194af0b7e6158b83db41b4ee1a00be7ddf1a
+  RealmSwift: 0eb5070d851cba7c66e841ca756d83609dc78bc8
+  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
   SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
 
-PODFILE CHECKSUM: 317742730cd9f260d98b9bc0c8320886eda03ce4
+PODFILE CHECKSUM: 7d733476d0aef917245776b9a86db38775505394
 
 COCOAPODS: 1.0.1
