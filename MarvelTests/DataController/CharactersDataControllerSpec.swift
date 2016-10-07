@@ -29,7 +29,7 @@ class CharactersDataControllerSpec: QuickSpec {
             beforeEach({
                 waitUntil(timeout: 5, action: { (done) in
                     if self.manager!.isReachable {
-                        dataController.loadDataFromServer({ (characters) in
+                        dataController.loadDataFromServer(success: { (characters) in
                             numberOfResults = characters.numberOfItems
                             done()
                             }, fail: { (error) in
@@ -85,7 +85,7 @@ class CharactersDataControllerSpec: QuickSpec {
                     try! realm.write {
                         realm.deleteAll()
                     }
-                    dataController.loadDataPersisted({ (characters) in
+                    dataController.loadDataPersisted(success: { (characters) in
                         numberOfResults = characters.numberOfItems
                         done()
                         }, fail: { (error) in

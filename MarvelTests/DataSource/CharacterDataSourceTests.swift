@@ -32,19 +32,20 @@ class CharacterDataSourceTests: XCTestCase {
         var numberOfRows : Int!
         let tableView = UITableView()
         
-        let expectation = expectationWithDescription("Get Characters number of items")
+        let expectation = self.expectation(description: "Get Characters number of items")
         
-        dataController.loadDataFromServer({ (characters) in
-            charactersData = characters
-            firstCharacter = charactersData.characterAtPosition(0)
-            dataSource.dataObject = charactersData
-            numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
-            numberOfItems = charactersData.numberOfItems
+        dataController.loadDataFromServer(
+            success: { (characters) in
+                charactersData = characters
+                firstCharacter = charactersData.characterAtPosition(0)
+                dataSource.dataObject = charactersData
+                numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
+                numberOfItems = charactersData.numberOfItems
             
-            XCTAssertEqual(numberOfItems, 20, "When the WS success, the number of items should be 20")
-            XCTAssertEqual(numberOfRows, numberOfItems, "When the WS success, the number of rows should be the number of items")
-            XCTAssertEqual(firstCharacter.name, "3-D Man", "When the WS success, the name of the first character should be 3-D Man")
-            expectation.fulfill()
+                XCTAssertEqual(numberOfItems, 20, "When the WS success, the number of items should be 20")
+                XCTAssertEqual(numberOfRows, numberOfItems, "When the WS success, the number of rows should be the number of items")
+                XCTAssertEqual(firstCharacter.name, "3-D Man", "When the WS success, the name of the first character should be 3-D Man")
+                expectation.fulfill()
             
             }, fail: { (error) in
                 numberOfItems = 0
@@ -52,7 +53,7 @@ class CharacterDataSourceTests: XCTestCase {
                 expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(10) { error in
+        waitForExpectations(timeout: 10) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

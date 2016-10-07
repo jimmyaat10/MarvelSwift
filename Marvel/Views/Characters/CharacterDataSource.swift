@@ -14,14 +14,14 @@ class CharacterDataSource: DataSource {
         super.init(dataObject: CharacterDataType())
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let
-            cell = tableView.dequeueReusableCellWithIdentifier("CharacterCell", forIndexPath: indexPath) as? CharacterCell,
-            character = dataObject as? CharacterDataType else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "CharacterCell", for: indexPath) as? CharacterCell,
+            let character = dataObject as? CharacterDataType else {
                 fatalError("Could not create CharacterCell")
         }
-        cell.configureCell(character[indexPath.row])
+        cell.configureCell(character[(indexPath as NSIndexPath).row])
         return cell
     }
     

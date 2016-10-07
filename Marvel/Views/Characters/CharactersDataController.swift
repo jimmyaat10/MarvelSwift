@@ -13,7 +13,7 @@ class CharactersDataController {
     
     private let manager = NetworkReachabilityManager(host: Router.baseURLString)
     
-    func loadDataPersisted(success:(CharacterDataType) -> Void, fail:(error:NSError)->Void) {
+    func loadDataPersisted(success:(CharacterDataType) -> Void, fail:(_ error:NSError)->Void) {
         let characters = PersistenceManager.sharedInstance.getPersistedCharacters()
         let hasCharacters = characters.count > 0
         
@@ -23,47 +23,47 @@ class CharactersDataController {
             let failureReason = "Seems like you don't have internet connection and don't have data persisted!"
             let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
             let error = NSError(domain: "com.albertarroyo.Marvel.error", code: 5000, userInfo: userInfo)
-            fail(error:error)
+            fail(error)
         }
     }
     
-    func loadDataFromServer(success:(CharacterDataType) -> Void, fail:(error:NSError)->Void) {
+    func loadDataFromServer(success:@escaping (CharacterDataType) -> Void, fail:@escaping (_ error:NSError)->Void) {
         ApiManager.sharedInstance.getCharacters(
-            {
+            success: {
                 let characters = PersistenceManager.sharedInstance.getPersistedCharacters()
                 success(CharacterDataType(characters:characters))
             })
         {(error) in
-            fail(error:error)
+            fail(error)
         }
     }
     
-    func loadData(success:(CharacterDataType) -> Void, fail:(error:NSError)->Void) {
+    func loadData(success:@escaping (CharacterDataType) -> Void, fail:@escaping (_ error:NSError)->Void) {
         
         if manager!.isReachable {
-            loadDataFromServer({ (characters) in
+            loadDataFromServer(success: { (characters) in
                 success(characters)
                 }, fail: { (error) in
-                    fail(error: error)
+                    fail(error)
             })
         } else {
-            loadDataPersisted({ (characters) in
+            loadDataPersisted(success: { (characters) in
                 success(characters)
                 }, fail: { (error) in
-                    fail(error: error)
+                    fail(error)
             })
         }
         
         //if the connection status change
         manager?.listener = { status in
             switch status {
-            case .NotReachable:
+            case .notReachable:
                 break
-            case .Reachable(_), .Unknown:
-                self.loadDataFromServer({ (characters) in
+            case .reachable(_), .unknown:
+                self.loadDataFromServer(success: { (characters) in
                     success(characters)
                     }, fail: { (error) in
-                        fail(error: error)
+                        fail(error)
                 })
                 break
             }

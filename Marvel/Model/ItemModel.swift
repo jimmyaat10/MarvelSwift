@@ -6,23 +6,30 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
+import RealmSwift
 
-final class ItemModel: NSObject, ResponseJSONObjectSerializable {
+class ItemModel: Object {
     
     let resourceURIKey  = "resourceURI"
     let nameKey         = "name"
     let typeKey         = "type"
     
-    var resourceURI: String?
-    var name: String?
-    var type: String?
+    dynamic var itemId = NSUUID().uuidString
     
-    required init?(json: JSON) {
-        self.resourceURI = json[resourceURIKey].string
-        self.name = json[nameKey].string
-        self.type = json[typeKey].string
+    dynamic var resourceURI: String?
+    dynamic var name: String?
+    dynamic var type: String?
+    
+    convenience required init?(json: JSON) {
+        self.init()
+        resourceURI = json[resourceURIKey].string
+        name = json[nameKey].string
+        type = json[typeKey].string
+    }
+    
+    override class func primaryKey() -> String? {
+        return "itemId"
     }
 
 }

@@ -14,7 +14,7 @@ class PersistenceManager {
     private var realm: Realm!
     
     func persistCharacters(characters:[CharacterModel]?,success:
-        () -> Void, fail:(error:NSError)->Void) {
+        () -> Void, fail:(_ error:NSError)->Void) {
         do {
             realm = try! Realm()
             try realm.write {
@@ -25,7 +25,7 @@ class PersistenceManager {
             success()
         } catch let error as NSError {
             print("PersistenceManager persistCharacters error: \(error)")
-            fail(error: error)
+            fail(error)
         }
     }
     

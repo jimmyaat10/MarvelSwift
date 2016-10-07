@@ -26,13 +26,14 @@ class CharacterDataSourceSpec: QuickSpec {
             
             beforeEach({
                 waitUntil(timeout: 5, action: { (done) in
-                    dataController.loadDataFromServer({ (characters) in
-                        charactersData = characters
-                        firstCharacter = charactersData.characterAtPosition(0)
-                        dataSource.dataObject = charactersData
-                        numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
-                        done()
-                        
+                    
+                    dataController.loadDataFromServer(
+                        success: { (characters) in
+                            charactersData = characters
+                            firstCharacter = charactersData.characterAtPosition(0)
+                            dataSource.dataObject = charactersData
+                            numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
+                            done()
                         }, fail: { (error) in
                             numberOfRows = 0
                             done()

@@ -17,7 +17,7 @@ class ThumbnailModelSpec: QuickSpec {
     override func spec() {
         let path = "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784"
         let ext = "jpg"
-        let data:[String: AnyObject] =  ["path" : path , "extension" : ext]
+        let data:[String: AnyObject] =  ["path" : path as AnyObject , "extension" : ext as AnyObject]
         var thumb: ThumbnailModel!
         
         beforeEach {

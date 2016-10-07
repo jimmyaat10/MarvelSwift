@@ -9,7 +9,7 @@
 import SwiftyJSON
 import RealmSwift
 
-final class ThumbnailModel: Object, ResponseJSONObjectSerializable {
+class ThumbnailModel: Object {
     
     let pathKey         = "path"
     let extensionKey    = "extension"

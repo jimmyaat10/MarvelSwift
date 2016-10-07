@@ -8,7 +8,7 @@
 
 import SwiftyJSON
 
-final class ListCharacterModel: ResponseJSONObjectSerializable {
+final class ListCharacterModel: NSObject {
     
     let dataKey     = "data"
     let resultsKey  = "results"

@@ -1,41 +1,41 @@
 PODS:
-  - Alamofire (3.4.1)
+  - Alamofire (4.0.1)
   - DZNEmptyDataSet (1.8.1)
-  - Kingfisher (2.4.3)
-  - Nimble (4.1.0)
-  - Quick (0.9.3)
-  - Realm (1.1.0):
-    - Realm/Headers (= 1.1.0)
-  - Realm/Headers (1.1.0)
-  - RealmSwift (1.1.0):
-    - Realm (= 1.1.0)
-  - SnapKit (0.22.0)
+  - Kingfisher (3.1.3)
+  - Nimble (5.0.0)
+  - Quick (0.10.0)
+  - Realm (2.0.2):
+    - Realm/Headers (= 2.0.2)
+  - Realm/Headers (2.0.2)
+  - RealmSwift (2.0.2):
+    - Realm (= 2.0.2)
+  - SnapKit (3.0.2)
   - SVProgressHUD (2.0.3)
-  - SwiftyJSON (2.3.2)
+  - SwiftyJSON (3.1.1)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.3)
+  - Alamofire (~> 4.0)
   - DZNEmptyDataSet (~> 1.8)
-  - Kingfisher (~> 2.4)
-  - Nimble
+  - Kingfisher (~> 3.0)
+  - Nimble (~> 5.0)
   - Quick
   - RealmSwift
-  - SnapKit (~> 0.22)
+  - SnapKit (~> 3.0)
   - SVProgressHUD (~> 2.0)
-  - SwiftyJSON (~> 2.3)
+  - SwiftyJSON (~> 3.0)
 
 SPEC CHECKSUMS:
-  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
+  Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Kingfisher: 322a9c1c5b03212c1e741d6bece72d387b01a77a
-  Nimble: 97a0a4cae5124c117115634b2d055d8c97d0af19
-  Quick: 13a2a2b19a5d8e3ed4fd0c36ee46597fd77ebf71
-  Realm: ceecf1a4540c4ce9efe196fe73fa9855bce05bd8
-  RealmSwift: 838058b2db95b12cb86bd0cf209df642c33fb60a
-  SnapKit: 0dd2fd157330f1ea11fd84da13e6be8a7a22bae0
+  Kingfisher: 007f5851c18c81e7cc106c9cbac1bafea1cce5dc
+  Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
+  Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
+  Realm: 0f5a194af0b7e6158b83db41b4ee1a00be7ddf1a
+  RealmSwift: 0eb5070d851cba7c66e841ca756d83609dc78bc8
+  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
-  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
 
-PODFILE CHECKSUM: 32bdaa029b1893b6dec026389b10565dcf11c22f
+PODFILE CHECKSUM: 7d733476d0aef917245776b9a86db38775505394
 
-COCOAPODS: 1.1.0.rc.1
+COCOAPODS: 1.0.1

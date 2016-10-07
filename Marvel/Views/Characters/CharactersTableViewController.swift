@@ -32,10 +32,10 @@ class CharactersTableViewController: UIViewController{
         
         if (!didSetupConstraints) {
             
-            tableView.snp_makeConstraints(closure: { (make) in
+            tableView.snp.makeConstraints({ (make) in
                 make.size.equalTo(view)
-                make.centerX.equalTo(view.snp_centerX)
-                make.centerY.equalTo(view.snp_centerY)
+                make.centerX.equalTo(view.snp.centerX)
+                make.centerY.equalTo(view.snp.centerY)
             })
             
             didSetupConstraints = true
@@ -56,19 +56,19 @@ class CharactersTableViewController: UIViewController{
 
     // MARK: Setup Methods
     
-    private func setupView() {
+    func setupView() {
         self.title = self.viewModel.viewTitle
         view.backgroundColor = self.viewModel.viewBackgroundColor
-
+        
         setupTableView()
         
         view.setNeedsUpdateConstraints()
     }
     
     private func setupTableView() {
-        tableView.registerClass(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 120
+        tableView.estimatedRowHeight = CharacterCell.preferredHeight()
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.dataSource = self.dataSource
@@ -77,7 +77,7 @@ class CharactersTableViewController: UIViewController{
         view.addSubview(tableView)
     }
     
-    private func setupSearchBar() {
+    func setupSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true
@@ -87,14 +87,14 @@ class CharactersTableViewController: UIViewController{
     
     // MARK: Load Methods
     
-    private func loadData() {
+    func loadData() {
         if viewModel.arrayCharacters.numberOfItems > 0 {
             self.dataSource.dataObject = self.viewModel.arrayCharacters
-            self.searchController.active = false
+            self.searchController.isActive = false
             self.tableView.reloadData()
         } else {
-            SVProgressHUD.showWithStatus("Loading")
-            viewModel.loadData({ 
+            SVProgressHUD.show(withStatus: "Loading")
+            viewModel.loadData(success: {
                 SVProgressHUD.dismiss()
                 self.dataSource.dataObject = self.viewModel.arrayCharacters
                 self.setupSearchBar()
@@ -102,8 +102,8 @@ class CharactersTableViewController: UIViewController{
             }) { (error) in
                 SVProgressHUD.dismiss()
                 if error.code == 5000 {
-                    let messageError = error.userInfo[NSLocalizedFailureReasonErrorKey]!.description
-                    self.showAlertMessage(title:"Error", message:messageError)
+                    let messageError = (error.userInfo[NSLocalizedFailureReasonErrorKey]! as AnyObject).description
+                    self.showAlertMessage(title:"Error", message:messageError!)
                 }
             }
         }
@@ -117,48 +117,48 @@ class CharactersTableViewController: UIViewController{
     
     // MARK : Alert methods
     
-    func showAlertMessage(title title: String, message: String) {
-        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+    func showAlertMessage(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
         
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
 }
 
 extension CharactersTableViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CharacterCell.preferredHeight();
     }
 }
 
 extension CharactersTableViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
-    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         // Do nothing for the moment
     }
 }
 
 extension CharactersTableViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    @available(iOS 8.0, *)
+    public func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        self.viewModel.filterContentForSearchText(searchBar.text!, completion: { (resultArray) in
+        self.viewModel.filterContentForSearchText(searchText: searchBar.text!, completion: { (resultArray) in
             self.dataSource.dataObject = resultArray
             self.tableView.reloadData()
-            }) { (error, defaultResultArray) in
-                switch (error.code){
-                case CharactersErrorCode.SearchTextEmpty.rawValue:
-                    self.dataSource.dataObject = defaultResultArray
-                    self.tableView.reloadData()
-                    break;
-                case CharactersErrorCode.SearchNoResultsFound.rawValue:
-                    self.dataSource.dataObject = CharacterDataType()
-                    self.tableView.reloadData()
-                    break;
-                default:
-                    break;
-                }
+        }) { (error, defaultResultArray) in
+            switch (error.code){
+            case CharactersErrorCode.SearchTextEmpty.rawValue:
+                self.dataSource.dataObject = defaultResultArray
+                self.tableView.reloadData()
+                break;
+            case CharactersErrorCode.SearchNoResultsFound.rawValue:
+                self.dataSource.dataObject = CharacterDataType()
+                self.tableView.reloadData()
+                break;
+            default:
+                break;
+            }
         }
     }
 }
@@ -167,43 +167,43 @@ extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
 {
     //MARK : DZNEmptyDataSetSource
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let textEmpty = "No results. Tap here to reload" as NSString
         let textRange = NSMakeRange(0, textEmpty.length)
         let attributedTitle = NSMutableAttributedString(string: textEmpty as String)
-        attributedTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: textRange)
+        attributedTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: textRange)
         return attributedTitle
     }
     
-    func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor! {
-        return UIColor.lightGrayColor()
+    func backgroundColor(forEmptyDataSet scrollView: UIScrollView!) -> UIColor! {
+        return UIColor.lightGray
     }
     
-    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 0
     }
     
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         return true;
     }
     
-    func offsetForEmptyDataSet(scrollView: UIScrollView!) -> CGPoint {
-        return CGPointZero
+    func offset(forEmptyDataSet scrollView: UIScrollView!) -> CGPoint {
+        return CGPoint.zero
     }
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         return nil
     }
     
-    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         return nil
     }
     
-    func emptyDataSetShouldAllowTouch(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
         return true
     }
     
-    func emptyDataSetDidTapView(scrollView: UIScrollView!) {
+    func emptyDataSetDidTap(_ scrollView: UIScrollView!) {
         self.emptyDataSetTapped()
     }
 }

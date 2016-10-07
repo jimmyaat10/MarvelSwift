@@ -9,7 +9,7 @@
 import SwiftyJSON
 import RealmSwift
 
-final class CharacterModel: Object, ResponseJSONObjectSerializable {
+class CharacterModel: Object {
     
     let idKey            = "id"
     let nameKey          = "name"
@@ -26,13 +26,13 @@ final class CharacterModel: Object, ResponseJSONObjectSerializable {
     dynamic var id: String!
     dynamic var name: String!
     dynamic var desc: String!
-    dynamic var modifiedAt: NSDate?
+    dynamic var modifiedAt: Date?
     dynamic var thumbnail: ThumbnailModel?
     dynamic var resourceURI: String = ""
-    var comics: ListModel?
-    var series: ListModel?
-    var stories: ListModel?
-    var events: ListModel?
+//    var comics: ListModel?
+//    var series: ListModel?
+//    var stories: ListModel?
+//    var events: ListModel?
     var urls: List<UrlModel>?
     
     static let sharedDateFormatter = CharacterModel.dateFormatter()
@@ -50,7 +50,7 @@ final class CharacterModel: Object, ResponseJSONObjectSerializable {
         
         let dateFormatter = CharacterModel.sharedDateFormatter
         if let modifiedDateString = json[modifiedKey].string {
-            self.modifiedAt = dateFormatter.dateFromString(modifiedDateString)
+            self.modifiedAt = dateFormatter.date(from: modifiedDateString)
         }
         
         if json[thumbnailKey].dictionary != nil {
@@ -61,21 +61,21 @@ final class CharacterModel: Object, ResponseJSONObjectSerializable {
         
         self.resourceURI = json[resourceURIKey].stringValue
         
-        if let comicJSON = json[comicsKey].dictionary {
-            self.comics = ListModel(json: JSON(comicJSON))
-        }
-        
-        if let seriesJSON = json[seriesKey].dictionary {
-            self.series = ListModel(json: JSON(seriesJSON))
-        }
-        
-        if let storiesJSON = json[storiesKey].dictionary {
-            self.stories = ListModel(json: JSON(storiesJSON))
-        }
-        
-        if let eventsJSON = json[eventsKey].dictionary {
-            self.events = ListModel(json: JSON(eventsJSON))
-        }
+//        if let comicJSON = json[comicsKey].dictionary {
+//            self.comics = ListModel(json: JSON(comicJSON))
+//        }
+//        
+//        if let seriesJSON = json[seriesKey].dictionary {
+//            self.series = ListModel(json: JSON(seriesJSON))
+//        }
+//        
+//        if let storiesJSON = json[storiesKey].dictionary {
+//            self.stories = ListModel(json: JSON(storiesJSON))
+//        }
+//        
+//        if let eventsJSON = json[eventsKey].dictionary {
+//            self.events = ListModel(json: JSON(eventsJSON))
+//        }
         
         self.urls = List<UrlModel>()
         if let urlsJSON = json[urlsKey].dictionary {
@@ -89,22 +89,22 @@ final class CharacterModel: Object, ResponseJSONObjectSerializable {
     
     func formatModifiedDateToString() -> String {
         let dateFormatter = CharacterModel.sharedDateFormatterToShow
-        return dateFormatter.stringFromDate(self.modifiedAt!)
+        return dateFormatter.string(from: self.modifiedAt!)
     }
     
-    class func dateFormatter() -> NSDateFormatter {
-        let aDateFormatter = NSDateFormatter()
+    class func dateFormatter() -> DateFormatter {
+        let aDateFormatter = DateFormatter()
         aDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        aDateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        aDateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        aDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        aDateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return aDateFormatter
     }
     
-    class func dateFormatterToShow() -> NSDateFormatter {
-        let aDateFormatter = NSDateFormatter()
+    class func dateFormatterToShow() -> DateFormatter {
+        let aDateFormatter = DateFormatter()
         aDateFormatter.dateFormat = "MMM d, yyyy"
-        aDateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        aDateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        aDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        aDateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return aDateFormatter
     }
     

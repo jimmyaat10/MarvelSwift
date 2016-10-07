@@ -9,13 +9,13 @@
 import SwiftyJSON
 import RealmSwift
 
-final class UrlModel: Object, ResponseJSONObjectSerializable {
+class UrlModel: Object {
     
     let urlKey      = "url"
     let typeKey     = "type"
     
-    var url: String?
-    var type: String?
+    dynamic var url: String?
+    dynamic var type: String?
     
     override class func primaryKey() -> String? {
         return "url"

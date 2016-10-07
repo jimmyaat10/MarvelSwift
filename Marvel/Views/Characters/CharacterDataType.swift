@@ -11,7 +11,7 @@ import RealmSwift
 
 struct CharacterDataType: DataType {
     
-    private var characters: Results<CharacterModel>?
+    var characters: Results<CharacterModel>?
     
     init(){
         
@@ -33,7 +33,7 @@ struct CharacterDataType: DataType {
         return characters![index]
     }
     
-    func characterAtPosition(index: Int) -> CharacterModel {
+    func characterAtPosition(_ index: Int) -> CharacterModel {
         return characters![index]
     }
     
