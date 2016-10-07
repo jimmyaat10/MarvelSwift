@@ -32,8 +32,8 @@ The app uses:<br><br>
 
 ##Requirements
 - iOS 9.0+
-- Xcode 7.3.x
-- Swift 2.2.x
+- Xcode 8
+- Swift 3
 
 ##License
 This app project is for demonstration purposes only. Use of this source code in any form without express authorization is strictly forbidden.
