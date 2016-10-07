@@ -32,9 +32,9 @@ class CharacterDataSourceTests: XCTestCase {
         var numberOfRows : Int!
         let tableView = UITableView()
         
-        let expectation = expectationWithDescription("Get Characters number of items")
+        let expectation = self.expectation(description: "Get Characters number of items")
         ApiManager.sharedInstance.getCharacters(
-            {(result) in
+            success: {(result) in
                 if let listChar = result.value?.characters {
                     charactersData = CharacterDataType(characters:listChar)
                     firstCharacter = charactersData.characterAtPosition(0)
@@ -53,7 +53,7 @@ class CharacterDataSourceTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(10) { error in
+        waitForExpectations(timeout: 10) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

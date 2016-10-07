@@ -27,7 +27,7 @@ class CharacterDataSourceSpec: QuickSpec {
             beforeEach({
                 waitUntil(timeout: 5, action: { (done) in
                     ApiManager.sharedInstance.getCharacters(
-                        {(result) in
+                        success: {(result) in
                             if let listChar = result.value?.characters {
                                 charactersData = CharacterDataType(characters:listChar)
                                 firstCharacter = charactersData.characterAtPosition(0)

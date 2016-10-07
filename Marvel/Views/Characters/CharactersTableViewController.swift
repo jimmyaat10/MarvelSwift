@@ -32,10 +32,10 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
         
         if (!didSetupConstraints) {
             
-            tableView.snp_makeConstraints(closure: { (make) in
+            tableView.snp.makeConstraints({ (make) in
                 make.size.equalTo(view)
-                make.centerX.equalTo(view.snp_centerX)
-                make.centerY.equalTo(view.snp_centerY)
+                make.centerX.equalTo(view.snp.centerX)
+                make.centerY.equalTo(view.snp.centerY)
             })
             
             didSetupConstraints = true
@@ -56,11 +56,11 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
 
     // MARK: Setup Methods
     
-    private func setupView() {
+    fileprivate func setupView() {
         self.title = "Characters"
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         view.addSubview(tableView)
-        tableView.registerClass(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
         tableView.emptyDataSetSource = self
@@ -70,7 +70,7 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
         view.setNeedsUpdateConstraints()
     }
     
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.tableFooterView = nil
@@ -79,27 +79,26 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
     
     // MARK: Load Methods
     
-    private func simulateLoadDataThatFails() {
-        SVProgressHUD.showWithStatus("Loading")
-        NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(CharactersTableViewController.dismissProgressHud), userInfo: nil, repeats: true)
+    fileprivate func simulateLoadDataThatFails() {
+        SVProgressHUD.show(withStatus: "Loading")
+        Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(CharactersTableViewController.dismissProgressHud), userInfo: nil, repeats: true)
 
     }
     
-    private func loadData() {
-        SVProgressHUD.showWithStatus("Loading")
-        ApiManager.sharedInstance.getCharacters(
-            {(result) in
+    fileprivate func loadData() {
+        SVProgressHUD.show(withStatus: "Loading")
+        ApiManager.sharedInstance.getCharacters(success: { (result) in
                 SVProgressHUD.dismiss()
                 if let listChar = result.value?.characters {
                     self.charactersData = CharacterDataType(characters:listChar)
                     self.dataSource.dataObject = self.charactersData
                     self.setupTableView()
                 }
-            })
-            {(error) in
+            }) { (error) in
                 SVProgressHUD.dismiss()
                 print("Error: ", error);
         }
+
     }
     
     // MARK : Selector Methods
@@ -110,7 +109,7 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate{
     
     // MARK: UITableViewDelegate
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CharacterCell.preferredHeight();
     }
     
@@ -120,43 +119,43 @@ extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
 {
     //MARK : DZNEmptyDataSetSource
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let textEmpty = "To show a list of characters, tap here" as NSString
         let textRange = NSMakeRange(0, textEmpty.length)
         let attributedTitle = NSMutableAttributedString(string: textEmpty as String)
-        attributedTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: textRange)
+        attributedTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: textRange)
         return attributedTitle
     }
     
-    func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor! {
-        return UIColor.lightGrayColor()
+    func backgroundColor(forEmptyDataSet scrollView: UIScrollView!) -> UIColor! {
+        return UIColor.lightGray
     }
     
-    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 0
     }
     
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         return true;
     }
     
-    func offsetForEmptyDataSet(scrollView: UIScrollView!) -> CGPoint {
-        return CGPointZero
+    func offset(forEmptyDataSet scrollView: UIScrollView!) -> CGPoint {
+        return CGPoint.zero
     }
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         return nil
     }
     
-    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         return nil
     }
     
-    func emptyDataSetShouldAllowTouch(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
         return true
     }
     
-    func emptyDataSetDidTapView(scrollView: UIScrollView!) {
+    func emptyDataSetDidTap(_ scrollView: UIScrollView!) {
         self.loadData()
     }
 }

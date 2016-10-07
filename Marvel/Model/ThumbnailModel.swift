@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-final class ThumbnailModel: NSObject, ResponseJSONObjectSerializable {
+final class ThumbnailModel: NSObject {
     
     let pathKey         = "path"
     let extensionKey    = "extension"

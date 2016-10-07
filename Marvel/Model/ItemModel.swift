@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-final class ItemModel: NSObject, ResponseJSONObjectSerializable {
+final class ItemModel: NSObject {
     
     let resourceURIKey  = "resourceURI"
     let nameKey         = "name"

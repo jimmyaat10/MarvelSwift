@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
     struct Formatter {
-        static let iso8601: NSDateFormatter = {
-            let formatter = NSDateFormatter()
-            formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierISO8601)
-            formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-            formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        static let iso8601: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: Calendar.Identifier.iso8601)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
             return formatter
         }()
     }
-    var iso8601: String { return Formatter.iso8601.stringFromDate(self) }
+    var iso8601: String { return Formatter.iso8601.string(from: self) }
 }

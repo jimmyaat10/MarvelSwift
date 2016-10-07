@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-final class ListCharacterModel: NSObject, ResponseJSONObjectSerializable {
+final class ListCharacterModel: NSObject {
     
     let dataKey     = "data"
     let resultsKey  = "results"

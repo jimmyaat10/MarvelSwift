@@ -22,41 +22,41 @@ class CharacterCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        nameCharacterLabel.textColor = UIColor.blackColor()
+        nameCharacterLabel.textColor = UIColor.black
         nameCharacterLabel.numberOfLines = 0
-        modifiedDateLabel.textColor = UIColor.blackColor()
+        modifiedDateLabel.textColor = UIColor.black
         modifiedDateLabel.numberOfLines = 0
         
         contentView.addSubview(imgCharacter)
         contentView.addSubview(nameCharacterLabel)
         contentView.addSubview(modifiedDateLabel)
         
-        imgCharacter.snp_makeConstraints { (make) in
-            make.size.equalTo(CGSizeMake(100, 100))
-            make.leading.equalTo(contentView.snp_leading).inset(10)
-            make.centerY.equalTo(contentView.snp_centerY)
+        imgCharacter.snp.makeConstraints { (make) in
+            make.size.equalTo(CGSize(width:100, height: 100))
+            make.leading.equalTo(contentView.snp.leading).inset(10)
+            make.centerY.equalTo(contentView.snp.centerY)
         }
-        nameCharacterLabel.snp_makeConstraints { (make) in
-            make.leading.equalTo(imgCharacter.snp_trailing).offset(10)
-            make.trailing.equalTo(contentView.snp_trailing).inset(10)
-            make.top.equalTo(contentView.snp_top).offset(10)
+        nameCharacterLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(imgCharacter.snp.trailing).offset(10)
+            make.trailing.equalTo(contentView.snp.trailing).inset(10)
+            make.top.equalTo(contentView.snp.top).offset(10)
         }
-        modifiedDateLabel.snp_makeConstraints { (make) in
-            make.leading.equalTo(nameCharacterLabel.snp_leading)
-            make.trailing.equalTo(nameCharacterLabel.snp_trailing)
-            make.bottom.equalTo(contentView.snp_bottom).offset(-10)
+        modifiedDateLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(nameCharacterLabel.snp.leading)
+            make.trailing.equalTo(nameCharacterLabel.snp.trailing)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-10)
         }
     }
     
-    func configureCell(character: CharacterModel) {
+    func configureCell(_ character: CharacterModel) {
         nameCharacterLabel.text = character.name
         modifiedDateLabel.text = character.formatModifiedDateToString()
         let urlString = (character.thumbnail?.path)!+"."+(character.thumbnail?.ext)!
-        let url = NSURL(string: urlString)
+        let url = URL(string: urlString)
         
-        self.imgCharacter.kf_showIndicatorWhenLoading = true
-        self.imgCharacter.kf_setImageWithURL(url, placeholderImage: UIImage.init(named: "placeholder"),
-                                              optionsInfo: [.Transition(ImageTransition.Fade(1))],
+        self.imgCharacter.kf.indicatorType = .activity
+        self.imgCharacter.kf.setImage(with: url, placeholder: UIImage.init(named: "placeholder"),
+                                      options: [.transition(ImageTransition.fade(1))],
                                               progressBlock: { receivedSize, totalSize in
 //                                                print("download image receivedSize progressBlock: \(receivedSize)/\(totalSize)")
             },

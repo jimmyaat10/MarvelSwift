@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-final class UrlModel: NSObject, ResponseJSONObjectSerializable {
+final class UrlModel: NSObject {
     
     let urlKey      = "url"
     let typeKey     = "type"

@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
+final class CharacterModel: NSObject {
     
     let idKey            = "id"
     let nameKey          = "name"
@@ -26,7 +26,7 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
     var id: String!
     var name: String!
     var desc: String!
-    var modifiedAt: NSDate?
+    var modifiedAt: Date?
     var thumbnail: ThumbnailModel?
     var resourceURI: String
     var comics: ListModel?
@@ -46,7 +46,7 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
         
         let dateFormatter = CharacterModel.sharedDateFormatter
         if let modifiedDateString = json[modifiedKey].string {
-            self.modifiedAt = dateFormatter.dateFromString(modifiedDateString)
+            self.modifiedAt = dateFormatter.date(from: modifiedDateString)
         }
         
         if json[thumbnailKey].dictionary != nil {
@@ -85,22 +85,22 @@ final class CharacterModel: NSObject, ResponseJSONObjectSerializable {
     
     func formatModifiedDateToString() -> String {
         let dateFormatter = CharacterModel.sharedDateFormatterToShow
-        return dateFormatter.stringFromDate(self.modifiedAt!)
+        return dateFormatter.string(from: self.modifiedAt!)
     }
     
-    class func dateFormatter() -> NSDateFormatter {
-        let aDateFormatter = NSDateFormatter()
+    class func dateFormatter() -> DateFormatter {
+        let aDateFormatter = DateFormatter()
         aDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        aDateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        aDateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        aDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        aDateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return aDateFormatter
     }
     
-    class func dateFormatterToShow() -> NSDateFormatter {
-        let aDateFormatter = NSDateFormatter()
+    class func dateFormatterToShow() -> DateFormatter {
+        let aDateFormatter = DateFormatter()
         aDateFormatter.dateFormat = "MMM d, yyyy"
-        aDateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        aDateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        aDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        aDateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return aDateFormatter
     }
     

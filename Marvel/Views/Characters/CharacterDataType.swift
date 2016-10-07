@@ -10,7 +10,7 @@ import UIKit
 
 struct CharacterDataType: DataType {
     
-    private var characters: [CharacterModel] = []
+    fileprivate var characters: [CharacterModel] = []
     
     init(){
         
@@ -28,7 +28,7 @@ struct CharacterDataType: DataType {
         return characters[index]
     }
     
-    func characterAtPosition(index: Int) -> CharacterModel {
+    func characterAtPosition(_ index: Int) -> CharacterModel {
         return characters[index]
     }
     

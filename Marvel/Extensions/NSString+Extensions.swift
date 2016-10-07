@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    var dateFromISO8601: NSDate? {
-        return NSDate.Formatter.iso8601.dateFromString(self)
+    var dateFromISO8601: Date? {
+        return Date.Formatter.iso8601.date(from: self)
     }
 }

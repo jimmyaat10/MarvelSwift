@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-final class ListModel: NSObject, ResponseJSONObjectSerializable {
+final class ListModel: NSObject {
     
     let availableKey        = "available"
     let collectionURIKey    = "collectionURI"

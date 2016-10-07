@@ -27,18 +27,18 @@ class CharacterModelTests: XCTestCase {
     }
     
     func testParseCharacterModelFromJSONResponse() {
-        let expectation = expectationWithDescription("Parse Characters from response JSON File")
+        let expectation = self.expectation(description: "Parse Characters from response JSON File")
         var json : JSON!
         var character : CharacterModel!
         var id : String!
         let name : String! = "3-D Man"
         var desc : String!
-        var modifiedAt : NSDate?
+        var modifiedAt : Date?
         var resourceURI : String!
         var thumbnail : ThumbnailModel?
         var thumbnailExtension : String?
         let expectedThumbnailExtension : String? = "jpg"
-        var comic = ListModel?()
+        var comic : ListModel?
         var returnedComics : Int?
         let expectedReturnedComics : Int? = 11
         var urls = [UrlModel?]()
@@ -56,7 +56,7 @@ class CharacterModelTests: XCTestCase {
             let dateFormatter = CharacterModel.sharedDateFormatter
             
             if let modifiedDateString = json[character.modifiedKey].string {
-                modifiedAt = dateFormatter.dateFromString(modifiedDateString)
+                modifiedAt = dateFormatter.date(from: modifiedDateString)
             }
             
             resourceURI = json[character.resourceURIKey].stringValue
@@ -71,7 +71,7 @@ class CharacterModelTests: XCTestCase {
             if let comicJSON = json[character.comicsKey].dictionary {
                 comic = ListModel(json: JSON(comicJSON))
             }
-            returnedComics = comic!.returned
+            returnedComics = comic?.returned
             
             if let urlsJSONArr = json[character.urlsKey].array {
                 for urlJSON in urlsJSONArr {
@@ -101,19 +101,19 @@ class CharacterModelTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(10) { error in
+        waitForExpectations(timeout: 10) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
         }
     }
     
-    internal func getDataFromFileWithSuccess(success: ((data: NSData) -> Void)) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let filePath = NSBundle.init(forClass: self.classForCoder).pathForResource(self.charactersJsonFileName, ofType:"json")
-            let data = try! NSData(contentsOfFile:filePath!,
-                options: NSDataReadingOptions.DataReadingUncached)
-            success(data: data)
+    internal func getDataFromFileWithSuccess(_ success: @escaping ((_ data: Data) -> Void)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+            let filePath = Bundle.init(for: self.classForCoder).path(forResource: self.charactersJsonFileName, ofType:"json")
+            let data = try! Data(contentsOf: URL(fileURLWithPath: filePath!),
+                options: NSData.ReadingOptions.uncached)
+            success(data)
         })
     }
 }
