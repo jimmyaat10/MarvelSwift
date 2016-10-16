@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 import DZNEmptyDataSet
+import RxCocoa
+import RxSwift
 
 class CharactersTableViewController: UIViewController{
     
@@ -20,6 +22,8 @@ class CharactersTableViewController: UIViewController{
     let cellIdentifier = "CharacterCell"
     let viewModel = CharactersTableViewModel()
     var dataSource = CharacterDataSource()
+    
+    let disposeBag = DisposeBag() // Bag of disposables to release them when view is being deallocated (protect against retain cycle)
     
     // MARK: LifeCycle
     override func viewDidLoad() {
@@ -75,14 +79,59 @@ class CharactersTableViewController: UIViewController{
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
+        
+        // Here we tell table view that if user clicks on a cell,
+        // and the keyboard is still visible, hide it
+        tableView
+            .rx.itemSelected
+            .subscribe(onNext: { [unowned self](indexPath) in
+                if self.searchController.searchBar.isFirstResponder == true {
+                    self.searchController.searchBar.endEditing(true)
+                }
+            }, onError: { (error) in
+                    
+            }, onCompleted: {
+                    
+            })
+            .addDisposableTo(disposeBag)
     }
     
     func setupSearchBar() {
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = searchController.searchBar
+        
+        searchController.searchBar
+            .rx.text
+            .throttle(0.5, scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [unowned self](query) in
+                self.viewModel.filterContentForSearchText(searchText: query, completion: { (resultArray) in
+                    self.dataSource.dataObject = resultArray
+                    self.tableView.reloadData()
+                }) { (error, defaultResultArray) in
+                    switch (error.code){
+                    case CharactersErrorCode.SearchTextEmpty.rawValue:
+                        self.dataSource.dataObject = defaultResultArray
+                        self.tableView.reloadData()
+                        break;
+                    case CharactersErrorCode.SearchNoResultsFound.rawValue:
+                        self.dataSource.dataObject = CharacterDataType()
+                        self.tableView.reloadData()
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                
+            }, onError: { (error) in
+                
+            }, onCompleted: {
+                    
+            })
+            .addDisposableTo(disposeBag)
     }
     
     // MARK: Load Methods
@@ -132,36 +181,36 @@ extension CharactersTableViewController: UITableViewDelegate {
     }
 }
 
-extension CharactersTableViewController: UISearchBarDelegate {
-    // MARK: - UISearchBar Delegate
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        // Do nothing for the moment
-    }
-}
-
-extension CharactersTableViewController: UISearchResultsUpdating {
-    @available(iOS 8.0, *)
-    public func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
-        self.viewModel.filterContentForSearchText(searchText: searchBar.text!, completion: { (resultArray) in
-            self.dataSource.dataObject = resultArray
-            self.tableView.reloadData()
-        }) { (error, defaultResultArray) in
-            switch (error.code){
-            case CharactersErrorCode.SearchTextEmpty.rawValue:
-                self.dataSource.dataObject = defaultResultArray
-                self.tableView.reloadData()
-                break;
-            case CharactersErrorCode.SearchNoResultsFound.rawValue:
-                self.dataSource.dataObject = CharacterDataType()
-                self.tableView.reloadData()
-                break;
-            default:
-                break;
-            }
-        }
-    }
-}
+//extension CharactersTableViewController: UISearchBarDelegate {
+//    // MARK: - UISearchBar Delegate
+//    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+//        // Do nothing for the moment
+//    }
+//}
+//
+//extension CharactersTableViewController: UISearchResultsUpdating {
+//    @available(iOS 8.0, *)
+//    public func updateSearchResults(for searchController: UISearchController) {
+//        let searchBar = searchController.searchBar
+//        self.viewModel.filterContentForSearchText(searchText: searchBar.text!, completion: { (resultArray) in
+//            self.dataSource.dataObject = resultArray
+//            self.tableView.reloadData()
+//        }) { (error, defaultResultArray) in
+//            switch (error.code){
+//            case CharactersErrorCode.SearchTextEmpty.rawValue:
+//                self.dataSource.dataObject = defaultResultArray
+//                self.tableView.reloadData()
+//                break;
+//            case CharactersErrorCode.SearchNoResultsFound.rawValue:
+//                self.dataSource.dataObject = CharacterDataType()
+//                self.tableView.reloadData()
+//                break;
+//            default:
+//                break;
+//            }
+//        }
+//    }
+//}
 
 extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
 {

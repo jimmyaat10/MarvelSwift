@@ -16,10 +16,11 @@ final class ListCharacterModel: NSObject {
     var characters: [CharacterModel]?
     
     required init(json: JSON) {
+        super.init()
         
         self.characters = [CharacterModel]()
         if let charactersJSON = json[dataKey][resultsKey].array {
-            for characterJSON in charactersJSON {
+            _ = charactersJSON.map{ [unowned self] characterJSON in
                 let character = CharacterModel(json: characterJSON)
                 self.characters?.append(character!)
             }

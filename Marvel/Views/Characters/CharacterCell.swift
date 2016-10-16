@@ -58,10 +58,10 @@ class CharacterCell: UITableViewCell {
         self.imgCharacter.kf.setImage(with: url, placeholder: UIImage.init(named: "placeholder"),
                                       options: [.transition(ImageTransition.fade(1))],
                                               progressBlock: { receivedSize, totalSize in
-//                                                print("download image receivedSize progressBlock: \(receivedSize)/\(totalSize)")
+//                                                dump("download image receivedSize progressBlock: \(receivedSize)/\(totalSize)")
             },
                                               completionHandler: { image, error, cacheType, imageURL in
-//                                                print("download image Finished")
+//                                                dump("download image Finished")
         })
     }
     

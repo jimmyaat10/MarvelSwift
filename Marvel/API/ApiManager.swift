@@ -38,7 +38,7 @@ class ApiManager {
         Alamofire.request(Router.getCharacters())
             .responseString { response in
                 if let receivedString = response.result.value {
-                    print("printGetCharacters: ",receivedString)
+                    dump("printGetCharacters: \(receivedString)")
                 }
         }
     }

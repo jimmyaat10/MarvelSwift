@@ -55,7 +55,7 @@ class CharacterDataSourceTests: XCTestCase {
         
         waitForExpectations(timeout: 10) { error in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
+                dump("Error: \(error.localizedDescription)")
             }
         }
     }

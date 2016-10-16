@@ -18,13 +18,13 @@ class PersistenceManager {
         do {
             realm = try! Realm()
             try realm.write {
-                for character in characters! {
+                characters.map{character in
                     realm.add(character,update: true)
                 }
             }
             success()
         } catch let error as NSError {
-            print("PersistenceManager persistCharacters error: \(error)")
+            dump("PersistenceManager persistCharacters error: \(error)")
             fail(error)
         }
     }
