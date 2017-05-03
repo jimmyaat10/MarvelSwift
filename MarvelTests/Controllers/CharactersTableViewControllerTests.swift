@@ -12,8 +12,6 @@ import XCTest
 
 class CharactersTableViewControllerTests: XCTestCase {
     
-    var charactersTableViewController = CharactersTableViewController()
-    
     override func setUp() {
         super.setUp()
         

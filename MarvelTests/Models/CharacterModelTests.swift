@@ -13,11 +13,15 @@ import SwiftyJSON
 
 class CharacterModelTests: XCTestCase {
     
-    let charactersJsonFileName = "characterResponse"
+    var character : CharacterModel!
+    var json : JSON!
     
     override func setUp() {
         super.setUp()
-        
+        let testBundle = Bundle(for: type(of: self))
+        let mockLoader = MockLoader(file: "character", in: testBundle)
+        json = JSON(data: (mockLoader?.data)!)
+        character = CharacterModel(json: json)
     }
     
     override func tearDown() {
@@ -28,8 +32,7 @@ class CharacterModelTests: XCTestCase {
     
     func testParseCharacterModelFromJSONResponse() {
         let expectation = self.expectation(description: "Parse Characters from response JSON File")
-        var json : JSON!
-        var character : CharacterModel!
+        
         var id : String!
         let name : String! = "3-D Man"
         var desc : String!
@@ -45,61 +48,57 @@ class CharacterModelTests: XCTestCase {
         var firstUrlType : String?
         let expectedfirstUrlType : String? = "detail"
         
-        self.getDataFromFileWithSuccess { (data) -> Void in
-            json = JSON(data: data)
-            character = CharacterModel(json: json)
-            
-            id = json[character.idKey].stringValue
-//            name = json[character.nameKey].stringValue
-            desc = json[character.descKey].stringValue
-            
-            let dateFormatter = CharacterModel.sharedDateFormatter
-            
-            if let modifiedDateString = json[character.modifiedKey].string {
-                modifiedAt = dateFormatter.date(from: modifiedDateString)
-            }
-            
-            resourceURI = json[character.resourceURIKey].stringValue
-            
-            if json[character.thumbnailKey].dictionary != nil {
-                if let thumb = ThumbnailModel(json: json[character.thumbnailKey]) {
-                    thumbnail = thumb
-                }
-            }
-            thumbnailExtension = thumbnail?.ext
-            
-            if let comicJSON = json[character.comicsKey].dictionary {
-                comic = ListModel(json: JSON(comicJSON))
-            }
-            returnedComics = comic?.returned
-            
-            if let urlsJSONArr = json[character.urlsKey].array {
-                for urlJSON in urlsJSONArr {
-                    if let url = UrlModel(json: urlJSON) {
-                        urls.append(url)
-                    }
-                }
-            }
-            if let urlsJSONDic = json[character.urlsKey].dictionary {
-                for (_, urlJSON) in urlsJSONDic {
-                    if let url = UrlModel(json: urlJSON) {
-                        urls.append(url)
-                    }
-                }
-            }
-            firstUrlType = urls[0]!.type
-            
-            XCTAssertEqual(character.id, id, "Id should be the same")
-            XCTAssertEqual(character.name, name, "Name should be the same")
-            XCTAssertEqual(character.desc, desc, "Desc should be the same")
-            XCTAssertEqual(character.modifiedAt, modifiedAt, "Modified date should be the same")
-            XCTAssertEqual(character.resourceURI, resourceURI, "ResourceUri should be the same")
-            XCTAssertEqual(thumbnailExtension, expectedThumbnailExtension, "Thumb Ext should be the same")
-            XCTAssertEqual(returnedComics, expectedReturnedComics, "Comics returned should be the same")
-            XCTAssertEqual(firstUrlType, expectedfirstUrlType, "First Url Type should be the same")
-            
-            expectation.fulfill()
+        id = json[character.idKey].stringValue
+        //            name = json[character.nameKey].stringValue
+        desc = json[character.descKey].stringValue
+        
+        let dateFormatter = CharacterModel.sharedDateFormatter
+        
+        if let modifiedDateString = json[character.modifiedKey].string {
+            modifiedAt = dateFormatter.date(from: modifiedDateString)
         }
+        
+        resourceURI = json[character.resourceURIKey].stringValue
+        
+        if json[character.thumbnailKey].dictionary != nil {
+            if let thumb = ThumbnailModel(json: json[character.thumbnailKey]) {
+                thumbnail = thumb
+            }
+        }
+        thumbnailExtension = thumbnail?.ext
+        
+        if let comicJSON = json[character.comicsKey].dictionary {
+            comic = ListModel(json: JSON(comicJSON))
+        }
+        returnedComics = comic?.returned
+        
+        if let urlsJSONArr = json[character.urlsKey].array {
+            for urlJSON in urlsJSONArr {
+                if let url = UrlModel(json: urlJSON) {
+                    urls.append(url)
+                }
+            }
+        }
+        if let urlsJSONDic = json[character.urlsKey].dictionary {
+            for (_, urlJSON) in urlsJSONDic {
+                if let url = UrlModel(json: urlJSON) {
+                    urls.append(url)
+                }
+            }
+        }
+        firstUrlType = urls[0]!.type
+        
+        XCTAssertEqual(character.id, id, "Id should be the same")
+        XCTAssertEqual(character.name, name, "Name should be the same")
+        XCTAssertEqual(character.desc, desc, "Desc should be the same")
+        XCTAssertEqual(character.modifiedAt, modifiedAt, "Modified date should be the same")
+        XCTAssertEqual(character.resourceURI, resourceURI, "ResourceUri should be the same")
+        XCTAssertEqual(thumbnailExtension, expectedThumbnailExtension, "Thumb Ext should be the same")
+        XCTAssertEqual(returnedComics, expectedReturnedComics, "Comics returned should be the same")
+        XCTAssertEqual(firstUrlType, expectedfirstUrlType, "First Url Type should be the same")
+        
+        expectation.fulfill()
+        
         
         waitForExpectations(timeout: 10) { error in
             if let error = error {
@@ -108,12 +107,4 @@ class CharacterModelTests: XCTestCase {
         }
     }
     
-    internal func getDataFromFileWithSuccess(_ success: @escaping ((_ data: Data) -> Void)) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
-            let filePath = Bundle.init(for: self.classForCoder).path(forResource: self.charactersJsonFileName, ofType:"json")
-            let data = try! Data(contentsOf: URL(fileURLWithPath: filePath!),
-                options: NSData.ReadingOptions.uncached)
-            success(data)
-        })
-    }
 }

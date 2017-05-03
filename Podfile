@@ -10,9 +10,10 @@ target 'Marvel' do
     pod 'Kingfisher'        , '~> 3.0'
     pod 'SVProgressHUD'     , '~> 2.0'
     pod 'DZNEmptyDataSet'   , '~> 1.8'
-    pod 'RealmSwift'        , '~> 2.0'
-    pod 'RxSwift'           , '3.0.0-beta.2'
-    pod 'RxCocoa'           , '3.0.0-beta.2'
+    pod 'RxSwift'           , '~> 3.2'
+    pod 'RxCocoa'           , '~> 3.2'
+    pod 'RealmSwift'        , '~> 2.4'
+    pod 'Reveal-SDK'        , :configurations => ['Debug']
 
 
     target 'MarvelTests' do

@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Enum with the public and private keys for the Marvel API
 enum MarvelKey {
     static let `public` = "edafed6e937d7d1b279111bdf69bbf58"
     static let `private` = "ad40dd3071a66dda9449131663b083f50cc4a732"

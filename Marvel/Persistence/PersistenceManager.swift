@@ -8,13 +8,13 @@
 
 import RealmSwift
 
-class PersistenceManager {
-    static let sharedInstance = PersistenceManager()
+class PersistenceManager: PersistenceManagerType {
     
     private var realm: Realm!
     
-    func persistCharacters(characters:[CharacterModel]?,success:
-        () -> Void, fail:(_ error:NSError)->Void) {
+    func persistCharacters(characters:[CharacterModel]?,
+                           success: () -> Void,
+                           fail: (_ error: NSError) -> Void) {
         do {
             realm = try! Realm()
             try realm.write {

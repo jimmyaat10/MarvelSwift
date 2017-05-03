@@ -14,23 +14,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
-        dump("Realm URL: \(Realm.Configuration.defaultConfiguration.fileURL)")
+        Utils.pathIOSSimulator()
+        AppAppearance.install()
         
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        
-        let controller = CharactersTableViewController();
-        let navigationController:UINavigationController = UINavigationController(rootViewController: controller);
-        
-        self.window!.rootViewController = navigationController;
-        
-        self.window!.backgroundColor = UIColor.white
-        self.window!.makeKeyAndVisible()
+        setupWindow()
+        setupInitialCoordinator()
         
         return true
     }
+    
+    func setupWindow() {
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
+        self.window?.makeKeyAndVisible()
+    }
+    
+    func setupInitialCoordinator() {
+        let sceneCoordinator = SceneCoordinator(window: window!)
+        let viewModel = CharactersViewModel(
+            dataController: CharactersDataController(
+                service: ApiService(),
+                persistence: PersistenceManager()
+            ),
+            coordinator: sceneCoordinator
+        )
+        let firstScene = Scene.characters(viewModel)
+        sceneCoordinator.transition(to: firstScene, type: .root)
+    }
+
 }
 

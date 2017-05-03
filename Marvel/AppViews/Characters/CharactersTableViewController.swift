@@ -13,38 +13,55 @@ import DZNEmptyDataSet
 import RxCocoa
 import RxSwift
 
-class CharactersTableViewController: UIViewController{
+class CharactersTableViewController: UIViewController, UITableViewDelegate {
     
-    var didSetupConstraints = false
+    fileprivate var didSetupConstraints = false
+    fileprivate var hasSearched = false
     
-    let tableView: UITableView = UITableView()
-    let searchController = UISearchController(searchResultsController: nil)
-    let cellIdentifier = "CharacterCell"
-    let viewModel = CharactersTableViewModel()
-    var dataSource = CharacterDataSource()
+    fileprivate lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = CharacterCell.preferredHeight()
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.dataSource = self.dataSource
+        tableView.delegate = self
+        tableView.tableFooterView = UIView()
+        return tableView
+    }()
     
-    let disposeBag = DisposeBag() // Bag of disposables to release them when view is being deallocated (protect against retain cycle)
+    fileprivate let searchController = UISearchController(searchResultsController: nil)
+    fileprivate var viewModel: CharactersViewModel!
+    fileprivate var dataSource = CharacterDataSource()
+    
+    fileprivate let disposeBag = DisposeBag() // Bag of disposables to release them when view is being deallocated (protect against retain cycle)
+    
+    init(viewModel: CharactersViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        self.setupViewConfiguration()
+        setupTableView()
+        configureKeyboardDismissesOnScroll()
+        configureKeyboardDismissesOnTouchCell()
         loadData()
     }
     
     override func updateViewConstraints() {
-        
         if (!didSetupConstraints) {
-            
-            tableView.snp.makeConstraints({ (make) in
-                make.size.equalTo(view)
-                make.centerX.equalTo(view.snp.centerX)
-                make.centerY.equalTo(view.snp.centerY)
-            })
-            
+            tableView.snp.makeConstraints { make in
+                make.centerX.centerY.size.equalTo(view)
+            }
             didSetupConstraints = true
         }
-        
         super.updateViewConstraints()
     }
     
@@ -60,43 +77,37 @@ class CharactersTableViewController: UIViewController{
 
     // MARK: Setup Methods
     
-    func setupView() {
-        self.title = self.viewModel.viewTitle
-        view.backgroundColor = self.viewModel.viewBackgroundColor
-        
-        setupTableView()
-        
-        view.setNeedsUpdateConstraints()
+    fileprivate func setupTableView() {
+        tableView.registerCustomCell(type: CharacterCell.self)
     }
     
-    private func setupTableView() {
-        tableView.register(CharacterCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = CharacterCell.preferredHeight()
-        tableView.emptyDataSetSource = self
-        tableView.emptyDataSetDelegate = self
-        tableView.dataSource = self.dataSource
-        tableView.delegate = self
-        tableView.tableFooterView = UIView()
-        view.addSubview(tableView)
+    fileprivate func configureKeyboardDismissesOnScroll() {
+        let searchBar = self.searchController.searchBar
         
-        // Here we tell table view that if user clicks on a cell,
-        // and the keyboard is still visible, hide it
+        tableView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let strongSelf = self else { return }
+                if strongSelf.hasSearched && searchBar.isFirstResponder {
+                    _ = searchBar.resignFirstResponder()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    fileprivate func configureKeyboardDismissesOnTouchCell() {
         tableView
             .rx.itemSelected
-            .subscribe(onNext: { [unowned self](indexPath) in
-                if self.searchController.searchBar.isFirstResponder == true {
-                    self.searchController.searchBar.endEditing(true)
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let strongSelf = self else { return }
+                if strongSelf.searchController.searchBar.isFirstResponder == true {
+                    strongSelf.searchController.searchBar.endEditing(true)
                 }
-            }, onError: { (error) in
-                    
-            }, onCompleted: {
-                    
             })
             .addDisposableTo(disposeBag)
     }
     
-    func setupSearchBar() {
+    fileprivate func setupSearchBar() {
 //        searchController.searchResultsUpdater = self
 //        searchController.searchBar.delegate = self
         definesPresentationContext = true
@@ -104,32 +115,32 @@ class CharactersTableViewController: UIViewController{
         tableView.tableHeaderView = searchController.searchBar
         
         searchController.searchBar
-            .rx.text
+            .rx.text.orEmpty
             .throttle(0.5, scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .subscribe(onNext: { [unowned self](query) in
-                self.viewModel.filterContentForSearchText(searchText: query, completion: { (resultArray) in
-                    self.dataSource.dataObject = resultArray
-                    self.tableView.reloadData()
-                }) { (error, defaultResultArray) in
+            .subscribe(onNext: { [weak self] query in
+                guard let strongSelf = self else { return }
+                if query != "" {
+                    strongSelf.hasSearched = true
+                }
+                strongSelf.viewModel.filterContentForSearchText(searchText: query, completion: { (resultArray) in
+                    strongSelf.dataSource.dataObject = resultArray
+                    strongSelf.tableView.reloadData()
+                }, fail: { (error, defaultResultArray) in
                     switch (error.code){
                     case CharactersErrorCode.SearchTextEmpty.rawValue:
-                        self.dataSource.dataObject = defaultResultArray
-                        self.tableView.reloadData()
+                        strongSelf.dataSource.dataObject = defaultResultArray
+                        strongSelf.hasSearched = false
+                        strongSelf.tableView.reloadData()
                         break;
                     case CharactersErrorCode.SearchNoResultsFound.rawValue:
-                        self.dataSource.dataObject = CharacterDataType()
-                        self.tableView.reloadData()
+                        strongSelf.dataSource.dataObject = CharacterDataType()
+                        strongSelf.tableView.reloadData()
                         break;
                     default:
                         break;
                     }
-                }
-                
-            }, onError: { (error) in
-                
-            }, onCompleted: {
-                    
+                })
             })
             .addDisposableTo(disposeBag)
     }
@@ -143,18 +154,20 @@ class CharactersTableViewController: UIViewController{
             self.tableView.reloadData()
         } else {
             SVProgressHUD.show(withStatus: "Loading")
-            viewModel.loadData(success: {
+            viewModel.loadData(success: { [weak self] _ in
                 SVProgressHUD.dismiss()
-                self.dataSource.dataObject = self.viewModel.arrayCharacters
-                self.setupSearchBar()
-                self.tableView.reloadData()
-            }) { (error) in
+                guard let strongSelf = self else { return }
+                strongSelf.dataSource.dataObject = strongSelf.viewModel.arrayCharacters
+                strongSelf.setupSearchBar()
+                strongSelf.tableView.reloadData()
+            }, fail:{ error in
                 SVProgressHUD.dismiss()
                 if error.code == 5000 {
-                    let messageError = (error.userInfo[NSLocalizedFailureReasonErrorKey]! as AnyObject).description
-                    self.showAlertMessage(title:"Error", message:messageError!)
+                    if let messageError = (error.userInfo[NSLocalizedFailureReasonErrorKey]! as AnyObject).description {
+                        self.showAlertMessage(title:"Error", message: messageError)
+                    }
                 }
-            }
+            })
         }
     }
     
@@ -175,9 +188,18 @@ class CharactersTableViewController: UIViewController{
     
 }
 
-extension CharactersTableViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CharacterCell.preferredHeight();
+extension CharactersTableViewController: ViewConfiguration {
+    func buildViewHierarchy() {
+        view.addSubview(tableView)
+    }
+    
+    func makeConstraints() {
+        view.setNeedsUpdateConstraints()
+    }
+    
+    func setupViews() {
+        self.title = self.viewModel.viewTitle
+        view.backgroundColor = self.viewModel.viewBackgroundColor
     }
 }
 

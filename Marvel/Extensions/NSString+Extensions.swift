@@ -12,4 +12,7 @@ extension String {
     var dateFromISO8601: Date? {
         return Date.Formatter.iso8601.date(from: self)
     }
+    public var lastPathComponent: String? {
+        return NSURL(fileURLWithPath: self).lastPathComponent
+    }
 }

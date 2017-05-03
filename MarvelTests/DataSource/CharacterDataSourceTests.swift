@@ -7,7 +7,8 @@
 //
 
 import XCTest
-
+import SwiftyJSON
+import RealmSwift
 @testable import Marvel
 
 class CharacterDataSourceTests: XCTestCase {
@@ -26,13 +27,14 @@ class CharacterDataSourceTests: XCTestCase {
     func testGetCharacters() {
         var charactersData : CharacterDataType!
         let dataSource = CharacterDataSource()
-        let dataController = CharactersDataController()
+        let dataController = CharactersDataController(
+            service: ApiServiceMock(testTarget: CharacterDataSourceTests.self),
+            persistence: PersistenceManager()
+        )
         var firstCharacter : CharacterModel!
         var numberOfItems : Int!
         var numberOfRows : Int!
         let tableView = UITableView()
-        
-        let expectation = self.expectation(description: "Get Characters number of items")
         
         dataController.loadDataFromServer(
             success: { (characters) in
@@ -45,20 +47,28 @@ class CharacterDataSourceTests: XCTestCase {
                 XCTAssertEqual(numberOfItems, 20, "When the WS success, the number of items should be 20")
                 XCTAssertEqual(numberOfRows, numberOfItems, "When the WS success, the number of rows should be the number of items")
                 XCTAssertEqual(firstCharacter.name, "3-D Man", "When the WS success, the name of the first character should be 3-D Man")
-                expectation.fulfill()
             
-            }, fail: { (error) in
+            }, fail: { error in
                 numberOfItems = 0
                 XCTAssertEqual(numberOfItems, 0, "When the WS fails, the number of items should be 0")
-                expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: 10) { error in
-            if let error = error {
-                dump("Error: \(error.localizedDescription)")
             }
-        }
+        )
+        
     }
 }
 
-
+fileprivate struct ApiServiceMock: ApiServiceType {
+    
+    let testTarget: AnyClass
+    
+    init(testTarget: AnyClass) {
+        self.testTarget = testTarget
+    }
+    
+    func getCharacters(success: @escaping ([CharacterModel]?) -> Void, fail: @escaping (_ error:NSError) -> Void) {
+        let testBundle = Bundle(for: testTarget)
+        let mock = MockLoader.init(file: "charactersResponse", in: testBundle)
+        let characters = ListCharacterModel.init(json: JSON(data: (mock?.data)!))
+        return success(characters.characters)
+    }
+}

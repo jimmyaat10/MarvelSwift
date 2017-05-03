@@ -8,6 +8,8 @@
 
 import Nimble
 import Quick
+import RealmSwift
+import SwiftyJSON
 
 @testable import Marvel
 
@@ -19,26 +21,25 @@ class CharacterDataSourceSpec: QuickSpec {
             
             var charactersData = CharacterDataType()
             let dataSource = CharacterDataSource()
-            let dataController = CharactersDataController()
+            let dataController = CharactersDataController(
+                service: ApiServiceMock(testTarget: CharacterDataSourceSpec.self),
+                persistence: PersistenceManager()
+            )
             let tableView = UITableView()
             var numberOfRows : Int!
             var firstCharacter : CharacterModel!
             
             beforeEach({
-                waitUntil(timeout: 5, action: { (done) in
-                    
-                    dataController.loadDataFromServer(
-                        success: { (characters) in
-                            charactersData = characters
-                            firstCharacter = charactersData.characterAtPosition(0)
-                            dataSource.dataObject = charactersData
-                            numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
-                            done()
-                        }, fail: { (error) in
-                            numberOfRows = 0
-                            done()
-                    })
-                })
+                dataController.loadDataFromServer(
+                    success: { characters in
+                        charactersData = characters
+                        firstCharacter = charactersData.characterAtPosition(0)
+                        dataSource.dataObject = charactersData
+                        numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
+                    }, fail: { error in
+                        numberOfRows = 0
+                    }
+                )
             })
             
             context("number of rows", {
@@ -56,3 +57,18 @@ class CharacterDataSourceSpec: QuickSpec {
     }
 }
 
+fileprivate struct ApiServiceMock: ApiServiceType {
+    
+    let testTarget: AnyClass
+    
+    init(testTarget: AnyClass) {
+        self.testTarget = testTarget
+    }
+    
+    func getCharacters(success: @escaping ([CharacterModel]?) -> Void, fail: @escaping (_ error:NSError) -> Void) {
+        let testBundle = Bundle(for: testTarget)
+        let mock = MockLoader.init(file: "charactersResponse", in: testBundle)
+        let characters = ListCharacterModel.init(json: JSON(data: (mock?.data)!))
+        return success(characters.characters)
+    }
+}

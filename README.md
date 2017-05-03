@@ -25,9 +25,10 @@ The app uses:<br><br>
  · **[Kingfisher](https://github.com/onevcat/Kingfisher) to cache images**<br>
  · **External DataSource** with DataType, DataSource, SourceType inspired by [BlendingCultures](https://realm.io/news/tryswift-daniel-steinberg-blending-cultures/)<br>
  · **[MVVM](http://artsy.github.io/blog/2015/09/24/mvvm-in-swift/)**<br>
- · **[Data Controllers](https://speakerdeck.com/esttorhe/mvvm-plus-rxswift-plus-datacontrollers-1)** to comunicate ApiManager and ViewModel<br>
- · **RxSwift** for the searchBar inspired by [RxSwift Examples](http://www.thedroidsonroids.com/blog/ios/rxswift-by-examples-1-the-basics/)<br>
- · **Tests** (with XCTest, [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble))<br>
+ · **[Dependency injection](http://artsy.github.io/blog/2016/06/27/dependency-injection-in-swift/) + Protocols** to easy structure the code and mock the tests<br>
+ · **[Data Controllers](https://speakerdeck.com/esttorhe/mvvm-plus-rxswift-plus-datacontrollers-1)** to comunicate ApiService and ViewModel<br>
+ · **[RxSwift](http://cocoapods.org/pods/RxSwift)** for the searchBar inspired by [RxSwift Examples](http://www.thedroidsonroids.com/blog/ios/rxswift-by-examples-1-the-basics/) and for the Navigation (Scenes) copied by [RayWenderlich RxSwift book](https://store.raywenderlich.com/products/rxswift)<br>
+ · **[TDD](https://www.youtube.com/watch?v=NW_KS0o6gMY)** inspired by Essential Developer TDD series (with XCTest, [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble))<br>
  · **[DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)** to show something when the view has no content<br>
  · **[SVProgressHUD](https://github.com/SVProgressHUD/SVProgressHUD)** to show the progress<br>
 
