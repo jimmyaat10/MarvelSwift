@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Foundation
 import Kingfisher
 
 class CharacterCell: UITableViewCell {

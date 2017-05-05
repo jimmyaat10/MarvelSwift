@@ -8,6 +8,7 @@
 
 import RealmSwift
 
+/// Responsible to manage the persisted data (Realm for this APP)
 class PersistenceManager: PersistenceManagerType {
     
     private var realm: Realm!

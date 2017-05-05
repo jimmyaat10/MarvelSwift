@@ -17,7 +17,7 @@ class CharacterDataSource: DataSource {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let
-            cell = tableView.dequeueReusableCell(withIdentifier: "CharacterCell", for: indexPath) as? CharacterCell,
+            cell = tableView.dequeueReusableCell(type: CharacterCell.self, forIndexPath: indexPath),
             let character = dataObject as? CharacterDataType else {
                 fatalError("Could not create CharacterCell")
         }

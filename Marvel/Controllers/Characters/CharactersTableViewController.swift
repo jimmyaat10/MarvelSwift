@@ -6,7 +6,6 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import UIKit
 import SnapKit
 import SVProgressHUD
 import DZNEmptyDataSet
