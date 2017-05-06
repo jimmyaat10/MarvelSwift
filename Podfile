@@ -19,7 +19,7 @@ target 'Marvel' do
     target 'MarvelTests' do
         inherit! :search_paths
         pod 'Quick'
-        pod 'Nimble', '~> 5.0'
+        pod 'Nimble', '~> 6.0'
     end
 end
 
