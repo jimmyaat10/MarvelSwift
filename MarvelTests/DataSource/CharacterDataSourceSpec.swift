@@ -17,43 +17,40 @@ class CharacterDataSourceSpec: QuickSpec {
     
     override func spec() {
         
+        let secondCharacterNameExpected = "A-Bomb (HAS)"
+        
         describe("character data source") {
             
-            var charactersData = CharacterDataType()
-            let dataSource = CharacterDataSource()
-            let dataController = CharactersDataController(
+            let persistenceTest = PersistenceManager(configuration: RealmConfig.test("CharacterDataSourceSpec").configuration)
+            let dataControllerTest = CharactersDataController(
                 service: ApiServiceMock(testTarget: CharacterDataSourceSpec.self),
-                persistence: PersistenceManager()
+                persistence: persistenceTest
             )
-            let tableView = UITableView()
-            var numberOfRows : Int!
-            var firstCharacter : CharacterModel!
+
+            var charactersData: CharacterDataType!
+            let dataSource = CharacterDataSource()
             
-            beforeEach({
-                dataController.loadDataFromServer(
-                    success: { characters in
+            afterEach {
+                persistenceTest.deleteAll()
+            }
+            
+            beforeEach {
+                dataControllerTest.loadData(
+                    success: { (characters) in
                         charactersData = characters
-                        firstCharacter = charactersData.characterAtPosition(0)
                         dataSource.dataObject = charactersData
-                        numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
-                    }, fail: { error in
-                        numberOfRows = 0
-                    }
-                )
-            })
+                }, fail: { (error) in
+                    XCTFail("dataControllerTest.loadData failed")
+                })
+            }
             
-            context("number of rows", {
-                it("compare the number of rows, should be 20") {
-                    expect(numberOfRows) == 20
-                }
-            })
-            
-            context("cell for row", {
-                it("first character name should be 3-D Man") {
-                    expect(firstCharacter.name) == "3-D Man"
+            context("CellForRow", {
+                it("second character name should be secondCharacterNameExpected") {
+                    expect(charactersData.characterAtPosition(1).name) == secondCharacterNameExpected
                 }
             })
         }
+        
     }
 }
 

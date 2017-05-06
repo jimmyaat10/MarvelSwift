@@ -12,4 +12,5 @@ import RealmSwift
 protocol PersistenceManagerType {
     func persistCharacters(characters:[CharacterModel]?, success: () -> Void, fail: (_ error: NSError) -> Void)
     func getPersistedCharacters() -> Results<CharacterModel>
+    func deleteAll()
 }

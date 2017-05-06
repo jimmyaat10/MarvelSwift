@@ -6,19 +6,19 @@
 //  Copyright © 2016 AlbertArroyo. All rights reserved.
 //
 
-import Alamofire
-import RealmSwift
+import Foundation
 
 /// Responsible to give the data from everywhere (Service or Persisted)
 class CharactersDataController: CharactersDataControllerType {
     
-    private let manager = NetworkReachabilityManager(host: Router.baseURLString)
     private let service: ApiServiceType
     private let persistence: PersistenceManagerType
+    private let reachabilityManager: Reachable
     
-    init(service: ApiServiceType, persistence: PersistenceManagerType) {
+    init(service: ApiServiceType, persistence: PersistenceManagerType, reachabilityManager: Reachable = AATReachabilityManager()) {
         self.service = service
         self.persistence = persistence
+        self.reachabilityManager = reachabilityManager
     }
     
     func loadDataPersisted(success: @escaping CharactersResult, fail: @escaping CharactersError) {
@@ -28,6 +28,9 @@ class CharactersDataController: CharactersDataControllerType {
         if hasCharacters{
             success(CharacterDataType(characters:characters))
         } else {
+            // Spec: this if statement when there's no characters persisted
+            // only can occur the first time the user open the APP and 
+            // there's no internet connection
             let failureReason = "Seems like you don't have internet connection and don't have data persisted!"
             let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
             let error = NSError(domain: "com.albertarroyo.Marvel.error", code: 5000, userInfo: userInfo)
@@ -54,7 +57,7 @@ class CharactersDataController: CharactersDataControllerType {
     
     func loadData(success: @escaping CharactersResult, fail: @escaping CharactersError) {
         
-        if manager!.isReachable {
+        if self.reachabilityManager.isReachable() {
             loadDataFromServer(
                 success: { characters in
                     success(characters)
@@ -73,7 +76,7 @@ class CharactersDataController: CharactersDataControllerType {
         }
         
         //if the connection status change
-        manager?.listener = { status in
+        self.reachabilityManager.manager?.listener = { status in
             switch status {
             case .notReachable:
                 break
@@ -89,10 +92,10 @@ class CharactersDataController: CharactersDataControllerType {
             }
         }
         
-        manager?.startListening()
+        self.reachabilityManager.manager?.startListening()
     }
     
     deinit{
-        manager?.stopListening()
+        self.reachabilityManager.manager?.stopListening()
     }
 }

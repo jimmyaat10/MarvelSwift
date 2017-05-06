@@ -58,6 +58,15 @@
 		92F04E6C1EBCE6E5003D550A /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E691EBCE6E5003D550A /* DataType.swift */; };
 		92F04E6D1EBCE6E5003D550A /* SourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E6A1EBCE6E5003D550A /* SourceType.swift */; };
 		92F04E6F1EBCE70C003D550A /* CharactersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E6E1EBCE70C003D550A /* CharactersViewModel.swift */; };
+		92F04E721EBDB196003D550A /* CharactersDataControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E711EBDB196003D550A /* CharactersDataControllerSpec.swift */; };
+		92F04E741EBDB3B6003D550A /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E731EBDB3B6003D550A /* RealmConfig.swift */; };
+		92F04E761EBDB45C003D550A /* RealmMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E751EBDB45C003D550A /* RealmMigration.swift */; };
+		92F04E781EBDB5BD003D550A /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E771EBDB5BD003D550A /* URL+Extensions.swift */; };
+		92F04E7A1EBDB895003D550A /* Reachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E791EBDB895003D550A /* Reachable.swift */; };
+		92F04E7C1EBDB915003D550A /* AATReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E7B1EBDB915003D550A /* AATReachabilityManager.swift */; };
+		92F04E811EBDC1B1003D550A /* PersistenceManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E801EBDC1B1003D550A /* PersistenceManagerSpec.swift */; };
+		92F04E851EBDDBDC003D550A /* TestingAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E841EBDDBDC003D550A /* TestingAppDelegate.swift */; };
+		92F04E871EBDE568003D550A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F04E861EBDE568003D550A /* main.swift */; };
 		C2ED09B38FD61212D13A4DC4 /* Pods_Marvel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B86C5601BE1CA679038B0C76 /* Pods_Marvel.framework */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +140,15 @@
 		92F04E691EBCE6E5003D550A /* DataType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		92F04E6A1EBCE6E5003D550A /* SourceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceType.swift; sourceTree = "<group>"; };
 		92F04E6E1EBCE70C003D550A /* CharactersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharactersViewModel.swift; sourceTree = "<group>"; };
+		92F04E711EBDB196003D550A /* CharactersDataControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharactersDataControllerSpec.swift; sourceTree = "<group>"; };
+		92F04E731EBDB3B6003D550A /* RealmConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
+		92F04E751EBDB45C003D550A /* RealmMigration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmMigration.swift; sourceTree = "<group>"; };
+		92F04E771EBDB5BD003D550A /* URL+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
+		92F04E791EBDB895003D550A /* Reachable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachable.swift; sourceTree = "<group>"; };
+		92F04E7B1EBDB915003D550A /* AATReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AATReachabilityManager.swift; sourceTree = "<group>"; };
+		92F04E801EBDC1B1003D550A /* PersistenceManagerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceManagerSpec.swift; sourceTree = "<group>"; };
+		92F04E841EBDDBDC003D550A /* TestingAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingAppDelegate.swift; sourceTree = "<group>"; };
+		92F04E861EBDE568003D550A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B86C5601BE1CA679038B0C76 /* Pods_Marvel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Marvel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBBAE497C85362D6887F4F1C /* Pods-Marvel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Marvel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Marvel/Pods-Marvel.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -179,10 +197,12 @@
 			isa = PBXGroup;
 			children = (
 				9232A1371D7DC8C30091157D /* Controllers */,
+				92F04E701EBDB163003D550A /* DataController */,
 				9232A1401D7F11170091157D /* DataSource */,
 				9204157D1D7302E000CA249C /* Info.plist */,
 				9231EBC11EB870EB0027BCF1 /* Mock */,
 				9232A1261D74131E0091157D /* Models */,
+				92F04E7D1EBDC171003D550A /* PersistenceManager */,
 			);
 			path = MarvelTests;
 			sourceTree = "<group>";
@@ -192,6 +212,8 @@
 			children = (
 				9229158D1D9827E900714F2C /* PersistenceManager.swift */,
 				9231EBF01EB9DC330027BCF1 /* PersistenceManagerType.swift */,
+				92F04E731EBDB3B6003D550A /* RealmConfig.swift */,
+				92F04E751EBDB45C003D550A /* RealmMigration.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -211,6 +233,7 @@
 				9231EBC71EB878FD0027BCF1 /* Utils.swift */,
 				9231EBC91EB87AAB0027BCF1 /* AppAppearance.swift */,
 				9231EBCD1EB87B540027BCF1 /* AppColors.swift */,
+				92F04E7B1EBDB915003D550A /* AATReachabilityManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -232,6 +255,7 @@
 			children = (
 				9231EBE31EB9C80C0027BCF1 /* CellTableImpl.swift */,
 				9231EBE51EB9CA1F0027BCF1 /* ViewConfiguration.swift */,
+				92F04E791EBDB895003D550A /* Reachable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -265,6 +289,7 @@
 		9232A1291D741EAA0091157D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				92F04E861EBDE568003D550A /* main.swift */,
 				923654B21D6C392D005095D5 /* Info.plist */,
 				92E09BC71D6C4AF30079897F /* Marvel-Bridging-Header.h */,
 			);
@@ -379,6 +404,7 @@
 				9231EBE01EB8956D0027BCF1 /* UINavigationController+Rx.swift */,
 				9231EBDC1EB893930027BCF1 /* UITableView+Extensions.swift */,
 				9231EBF21EB9EA2B0027BCF1 /* UIView+Extensions.swift */,
+				92F04E771EBDB5BD003D550A /* URL+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -400,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				923654A61D6C392D005095D5 /* AppDelegate.swift */,
+				92F04E841EBDDBDC003D550A /* TestingAppDelegate.swift */,
 			);
 			path = AppDelegate;
 			sourceTree = "<group>";
@@ -487,6 +514,22 @@
 				92E09BE71D6F561E0079897F /* CharacterCell.swift */,
 			);
 			path = Characters;
+			sourceTree = "<group>";
+		};
+		92F04E701EBDB163003D550A /* DataController */ = {
+			isa = PBXGroup;
+			children = (
+				92F04E711EBDB196003D550A /* CharactersDataControllerSpec.swift */,
+			);
+			path = DataController;
+			sourceTree = "<group>";
+		};
+		92F04E7D1EBDC171003D550A /* PersistenceManager */ = {
+			isa = PBXGroup;
+			children = (
+				92F04E801EBDC1B1003D550A /* PersistenceManagerSpec.swift */,
+			);
+			path = PersistenceManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -695,9 +738,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9231EBC51EB8727F0027BCF1 /* MockLoader.swift in Sources */,
+				92F04E721EBDB196003D550A /* CharactersDataControllerSpec.swift in Sources */,
+				92F04E811EBDC1B1003D550A /* PersistenceManagerSpec.swift in Sources */,
 				920415841D73030B00CA249C /* CharacterModelTests.swift in Sources */,
 				9232A1441D7F1C4B0091157D /* CharacterDataSourceTests.swift in Sources */,
 				9232A1391D7DC8F20091157D /* CharactersTableViewControllerTests.swift in Sources */,
+				92F04E851EBDDBDC003D550A /* TestingAppDelegate.swift in Sources */,
 				9232A13F1D7EEFBE0091157D /* ThumbnailModelSpec.swift in Sources */,
 				9232A1421D7F11470091157D /* CharacterDataSourceSpec.swift in Sources */,
 			);
@@ -709,6 +755,7 @@
 			files = (
 				9232A1341D7D549A0091157D /* CharacterDataSource.swift in Sources */,
 				9231EBD61EB87CFC0027BCF1 /* Scene+ViewController.swift in Sources */,
+				92F04E871EBDE568003D550A /* main.swift in Sources */,
 				92E09BCF1D6C56D10079897F /* NSDate+Extensions.swift in Sources */,
 				92F04E661EBCE6D2003D550A /* CharactersDataController.swift in Sources */,
 				92E09BE21D6CB8DB0079897F /* UrlModel.swift in Sources */,
@@ -719,12 +766,14 @@
 				92E09BE41D6DB3FD0079897F /* ListCharacterModel.swift in Sources */,
 				92E09BDA1D6CA8C30079897F /* CharacterModel.swift in Sources */,
 				92E09BD71D6C59780079897F /* ApiService.swift in Sources */,
+				92F04E781EBDB5BD003D550A /* URL+Extensions.swift in Sources */,
 				9231EBE61EB9CA1F0027BCF1 /* ViewConfiguration.swift in Sources */,
 				92E09BDC1D6CA9DD0079897F /* ThumbnailModel.swift in Sources */,
 				92F04E6C1EBCE6E5003D550A /* DataType.swift in Sources */,
 				9232A1361D7D55010091157D /* CharacterDataType.swift in Sources */,
 				92E09BCC1D6C53E80079897F /* ApiRouter.swift in Sources */,
 				9231EBCC1EB87B370027BCF1 /* UIColor+Extensions.swift in Sources */,
+				92F04E7C1EBDB915003D550A /* AATReachabilityManager.swift in Sources */,
 				9231EBE11EB8956D0027BCF1 /* UINavigationController+Rx.swift in Sources */,
 				9231EBD91EB87CFC0027BCF1 /* SceneTransitionType.swift in Sources */,
 				92F04E611EBCE6A8003D550A /* AppConstants.swift in Sources */,
@@ -735,7 +784,10 @@
 				9231EBF31EB9EA2B0027BCF1 /* UIView+Extensions.swift in Sources */,
 				9231EBDD1EB893930027BCF1 /* UITableView+Extensions.swift in Sources */,
 				9231EBF11EB9DC330027BCF1 /* PersistenceManagerType.swift in Sources */,
+				92F04E7A1EBDB895003D550A /* Reachable.swift in Sources */,
+				92F04E741EBDB3B6003D550A /* RealmConfig.swift in Sources */,
 				9231EBE81EB9D2C60027BCF1 /* ApiServiceType.swift in Sources */,
+				92F04E761EBDB45C003D550A /* RealmMigration.swift in Sources */,
 				9231EBD81EB87CFC0027BCF1 /* SceneCoordinatorType.swift in Sources */,
 				92E09BD11D6C56ED0079897F /* NSString+Extensions.swift in Sources */,
 				9231EBCA1EB87AAB0027BCF1 /* AppAppearance.swift in Sources */,

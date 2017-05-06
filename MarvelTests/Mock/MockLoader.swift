@@ -21,7 +21,7 @@ struct MockLoader {
         let pathURL = URL(fileURLWithPath: path)
         do {
             data = try Data(contentsOf: pathURL, options: .dataReadingMapped)
-            if let decoded = NSString(data: data, encoding: 0) as? String {
+            if let decoded = NSString(data: data, encoding: 0) as String? {
                 json = decoded
             } else {
                 return nil

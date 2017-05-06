@@ -8,10 +8,14 @@
 
 import XCTest
 import SwiftyJSON
-import RealmSwift
 @testable import Marvel
 
 class CharacterDataSourceTests: XCTestCase {
+    
+    let persistenceTest = PersistenceManager(configuration: RealmConfig.test("CharacterDataSourceTests").configuration)
+    
+    let numberOfRowsExpected: Int = 2
+    let secondCharacterNameExpected: String = "A-Bomb (HAS)"
     
     override func setUp() {
         super.setUp()
@@ -20,7 +24,7 @@ class CharacterDataSourceTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        
+        persistenceTest.deleteAll()
         super.tearDown()
     }
     
@@ -29,32 +33,24 @@ class CharacterDataSourceTests: XCTestCase {
         let dataSource = CharacterDataSource()
         let dataController = CharactersDataController(
             service: ApiServiceMock(testTarget: CharacterDataSourceTests.self),
-            persistence: PersistenceManager()
+            persistence: persistenceTest
         )
-        var firstCharacter : CharacterModel!
-        var numberOfItems : Int!
-        var numberOfRows : Int!
-        let tableView = UITableView()
         
-        dataController.loadDataFromServer(
+        dataController.loadData(
             success: { (characters) in
                 charactersData = characters
-                firstCharacter = charactersData.characterAtPosition(0)
                 dataSource.dataObject = charactersData
-                numberOfRows = dataSource.tableView(tableView, numberOfRowsInSection: 0)
-                numberOfItems = charactersData.numberOfItems
+                let numberOfItems = charactersData.numberOfItems
             
-                XCTAssertEqual(numberOfItems, 20, "When the WS success, the number of items should be 20")
-                XCTAssertEqual(numberOfRows, numberOfItems, "When the WS success, the number of rows should be the number of items")
-                XCTAssertEqual(firstCharacter.name, "3-D Man", "When the WS success, the name of the first character should be 3-D Man")
-            
+                XCTAssertEqual(numberOfItems, self.numberOfRowsExpected, "When the WS success, the number of items should be numberOfRowsExpected")
+                XCTAssertEqual(charactersData.characterAtPosition(1).name, self.secondCharacterNameExpected, "When the WS success, the name of the first character should be secondCharacterNameExpected")
             }, fail: { error in
-                numberOfItems = 0
-                XCTAssertEqual(numberOfItems, 0, "When the WS fails, the number of items should be 0")
+                XCTFail("dataControllerTest.loadData failed")
             }
         )
         
     }
+    
 }
 
 fileprivate struct ApiServiceMock: ApiServiceType {
