@@ -35,13 +35,15 @@ class CharacterDataSourceSpec: QuickSpec {
             }
             
             beforeEach {
-                dataControllerTest.loadData(
-                    success: { (characters) in
+                dataControllerTest.loadData { result in
+                    switch result {
+                    case .success(let characters):
                         charactersData = characters
                         dataSource.dataObject = charactersData
-                }, fail: { (error) in
-                    XCTFail("dataControllerTest.loadData failed")
-                })
+                    case .failure(let error):
+                        XCTFail("dataControllerTest.loadData failed error: \(error)")
+                    }
+                }
             }
             
             context("CellForRow", {
@@ -51,21 +53,5 @@ class CharacterDataSourceSpec: QuickSpec {
             })
         }
         
-    }
-}
-
-fileprivate struct ApiServiceMock: ApiServiceType {
-    
-    let testTarget: AnyClass
-    
-    init(testTarget: AnyClass) {
-        self.testTarget = testTarget
-    }
-    
-    func getCharacters(success: @escaping ([CharacterModel]?) -> Void, fail: @escaping (_ error:NSError) -> Void) {
-        let testBundle = Bundle(for: testTarget)
-        let mock = MockLoader.init(file: "charactersResponse", in: testBundle)
-        let characters = ListCharacterModel.init(json: JSON(data: (mock?.data)!))
-        return success(characters.characters)
     }
 }

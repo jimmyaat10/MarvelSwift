@@ -12,18 +12,37 @@ import SwiftyJSON
 
 struct ApiService: ApiServiceType {
     
-    public enum APIErrorCode: Int {
-        case InputStreamReadFailed              = -6000
-        case OutputStreamWriteFailed            = -6001
-        case ContentTypeValidationFailed        = -6002
-        case StatusCodeValidationFailed         = -6003
-        case DataSerializationFailed            = -6004
-        case StringSerializationFailed          = -6005
-        case JSONSerializationFailed            = -6006
-        case PropertyListSerializationFailed    = -6007
+    class Retrier: RequestRetrier {
+        func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
+            let shouldRetry = (error as NSError).code == NSURLErrorTimedOut
+            completion(shouldRetry, 3)
+        }
+    }
+    
+    let sessionManager: Alamofire.SessionManager = {
         
-        /* Add custom error codes as you see fit, for this APP start with 7500 */
-        case ListCharacterParseError            = -7500
+        let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
+        
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+//        sessionManager.retrier = Retrier()
+        return sessionManager
+    }()
+
+    fileprivate enum APIError: Error {
+        
+        static let errorDomain = "com.albertarroyo.Marvel.APIError"
+        
+        case InputStreamReadFailed
+        case OutputStreamWriteFailed
+        case ContentTypeValidationFailed
+        case StatusCodeValidationFailed
+        case DataSerializationFailed
+        case StringSerializationFailed
+        case JSONSerializationFailed(message: String)
+        case PropertyListSerializationFailed
+        case ListCharacterParseError(message: String)
+        
     }
     
     func clearCache() -> Void {
@@ -32,7 +51,7 @@ struct ApiService: ApiServiceType {
     }
     
     func printGetCharacters() -> Void {
-        Alamofire.request(Router.getCharacters())
+        sessionManager.request(Router.getCharacters())
             .responseString { response in
                 if let receivedString = response.result.value {
                     Utils.DLog(message: "receivedString: \(receivedString)", functionName: "printGetCharacters", fileName: "ApiManager")
@@ -40,28 +59,21 @@ struct ApiService: ApiServiceType {
         }
     }
     
-    func getCharacters(success: @escaping ([CharacterModel]?) -> Void, fail: @escaping (_ error:NSError) -> Void) {
-        Alamofire.request(Router.getCharacters())
+    func getCharacters(completion: @escaping (Result<[CharacterModel]>) -> Void ) {
+        sessionManager.request(Router.getCharacters())
             .responseJSON { (response) in
                 guard let json = response.result.value else {
                     Utils.DLog(message: "Not an array response!", functionName: "getCharacters", fileName: "ApiManager")
-                    let failureReason = "JSON could not be serialized into response array"
-                    let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
-                    let error = NSError(domain: "com.albertarroyo.Marvel.error", code: APIErrorCode.JSONSerializationFailed.rawValue, userInfo: userInfo)
-                    
-                    fail(error)
+                    completion(.failure(APIError.JSONSerializationFailed(message: "JSON could not be serialized into response array")))
                     return
                 }
+                //TODO AAT: give it a functional approax
                 let charactersList = ListCharacterModel.init(json: JSON(json))
                 if let characters = charactersList.characters  {
-                    success(characters)
+                    completion(.success(characters))
                 } else {
                     Utils.DLog(message: "Can't parse ListCharacterModel", functionName: "getCharacters", fileName: "ApiManager")
-                    let failureReason = "JSON could not be serialized into response array"
-                    let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
-                    let error = NSError(domain: "com.albertarroyo.Marvel.error", code: APIErrorCode.ListCharacterParseError.rawValue, userInfo: userInfo)
-                    
-                    fail(error)
+                    completion(.failure(APIError.ListCharacterParseError(message: "ListCharacters could not be parsed")))
                 }
         }
     }

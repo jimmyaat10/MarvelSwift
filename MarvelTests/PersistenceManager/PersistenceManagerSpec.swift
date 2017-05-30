@@ -33,14 +33,15 @@ class PersistenceManagerSpec: QuickSpec {
                 let json = JSON(data: mockData)
                 let charactersList = ListCharacterModel.init(json: json)
                 
-                sut.persistCharacters(characters: charactersList.characters, success: {
-                    it("compare the number of characters persisted, should be 2") {
-                        expect(sut.getPersistedCharacters().count).to(equal(2))
+                sut.persistCharacters(characters: charactersList.characters,
+                    success: {
+                        it("compare the number of characters persisted, should be 2") {
+                            expect(sut.getPersistedCharacters().count).to(equal(2))
+                        }
+                    }, fail: { (error) in
+                        XCTFail("persist characters doesn't return correctly. Error: \(error)")
                     }
-                }, fail: { (error) in
-                    XCTFail("persist characters doesn't return correctly. Error: \(error)")
-                })
-                
+                )
             })
         }
     }

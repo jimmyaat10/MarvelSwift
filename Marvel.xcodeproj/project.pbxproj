@@ -38,9 +38,13 @@
 		9232A1441D7F1C4B0091157D /* CharacterDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9232A1431D7F1C4B0091157D /* CharacterDataSourceTests.swift */; };
 		923654A71D6C392D005095D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923654A61D6C392D005095D5 /* AppDelegate.swift */; };
 		923654AE1D6C392D005095D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 923654AD1D6C392D005095D5 /* Assets.xcassets */; };
+		92BE96471EDD9D2800EE802B /* CharacterErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BE96461EDD9D2800EE802B /* CharacterErrors.swift */; };
+		92BE96491EDDA07B00EE802B /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BE96481EDDA07B00EE802B /* Result.swift */; };
+		92BE964C1EDDAD7900EE802B /* APIServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BE964B1EDDAD7900EE802B /* APIServiceMock.swift */; };
+		92BE964E1EDDAE4B00EE802B /* AATReachabilityManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BE964D1EDDAE4B00EE802B /* AATReachabilityManagerMock.swift */; };
 		92E09BCC1D6C53E80079897F /* ApiRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BCB1D6C53E80079897F /* ApiRouter.swift */; };
 		92E09BCF1D6C56D10079897F /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BCE1D6C56D10079897F /* NSDate+Extensions.swift */; };
-		92E09BD11D6C56ED0079897F /* NSString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BD01D6C56ED0079897F /* NSString+Extensions.swift */; };
+		92E09BD11D6C56ED0079897F /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BD01D6C56ED0079897F /* String+Extensions.swift */; };
 		92E09BD71D6C59780079897F /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BD61D6C59780079897F /* ApiService.swift */; };
 		92E09BDA1D6CA8C30079897F /* CharacterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BD91D6CA8C30079897F /* CharacterModel.swift */; };
 		92E09BDC1D6CA9DD0079897F /* ThumbnailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E09BDB1D6CA9DD0079897F /* ThumbnailModel.swift */; };
@@ -119,10 +123,14 @@
 		923654A61D6C392D005095D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		923654AD1D6C392D005095D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		923654B21D6C392D005095D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92BE96461EDD9D2800EE802B /* CharacterErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterErrors.swift; sourceTree = "<group>"; };
+		92BE96481EDDA07B00EE802B /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		92BE964B1EDDAD7900EE802B /* APIServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceMock.swift; sourceTree = "<group>"; };
+		92BE964D1EDDAE4B00EE802B /* AATReachabilityManagerMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AATReachabilityManagerMock.swift; sourceTree = "<group>"; };
 		92E09BC71D6C4AF30079897F /* Marvel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Marvel-Bridging-Header.h"; path = "Marvel/Supporting Files/Marvel-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		92E09BCB1D6C53E80079897F /* ApiRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRouter.swift; sourceTree = "<group>"; };
 		92E09BCE1D6C56D10079897F /* NSDate+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extensions.swift"; sourceTree = "<group>"; };
-		92E09BD01D6C56ED0079897F /* NSString+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Extensions.swift"; sourceTree = "<group>"; };
+		92E09BD01D6C56ED0079897F /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		92E09BD61D6C59780079897F /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		92E09BD91D6CA8C30079897F /* CharacterModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterModel.swift; sourceTree = "<group>"; };
 		92E09BDB1D6CA9DD0079897F /* ThumbnailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailModel.swift; sourceTree = "<group>"; };
@@ -199,6 +207,7 @@
 				9232A1371D7DC8C30091157D /* Controllers */,
 				92F04E701EBDB163003D550A /* DataController */,
 				9232A1401D7F11170091157D /* DataSource */,
+				92BE964A1EDDAD5A00EE802B /* Helpers */,
 				9204157D1D7302E000CA249C /* Info.plist */,
 				9231EBC11EB870EB0027BCF1 /* Mock */,
 				9232A1261D74131E0091157D /* Models */,
@@ -234,6 +243,7 @@
 				9231EBC91EB87AAB0027BCF1 /* AppAppearance.swift */,
 				9231EBCD1EB87B540027BCF1 /* AppColors.swift */,
 				92F04E7B1EBDB915003D550A /* AATReachabilityManager.swift */,
+				92BE96481EDDA07B00EE802B /* Result.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -370,6 +380,7 @@
 				92F04E581EBCE3DB003D550A /* Controllers */,
 				9231EBED1EB9D4E70027BCF1 /* DataController */,
 				9232A12B1D7D523D0091157D /* DataSource */,
+				92BE96451EDD9CF900EE802B /* Errors */,
 				92E09BCD1D6C567D0079897F /* Extensions */,
 				9231EBC61EB878E00027BCF1 /* Helpers */,
 				92E09BD81D6CA8A50079897F /* Model */,
@@ -382,6 +393,23 @@
 				92F04E591EBCE3E9003D550A /* ViewModels */,
 			);
 			path = Marvel;
+			sourceTree = "<group>";
+		};
+		92BE96451EDD9CF900EE802B /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				92BE96461EDD9D2800EE802B /* CharacterErrors.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		92BE964A1EDDAD5A00EE802B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				92BE964B1EDDAD7900EE802B /* APIServiceMock.swift */,
+				92BE964D1EDDAE4B00EE802B /* AATReachabilityManagerMock.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		92E09BCA1D6C539C0079897F /* API */ = {
@@ -399,7 +427,7 @@
 			children = (
 				92E09BCE1D6C56D10079897F /* NSDate+Extensions.swift */,
 				9231EBDE1EB893D20027BCF1 /* NSObject+Extensions.swift */,
-				92E09BD01D6C56ED0079897F /* NSString+Extensions.swift */,
+				92E09BD01D6C56ED0079897F /* String+Extensions.swift */,
 				9231EBCB1EB87B370027BCF1 /* UIColor+Extensions.swift */,
 				9231EBE01EB8956D0027BCF1 /* UINavigationController+Rx.swift */,
 				9231EBDC1EB893930027BCF1 /* UITableView+Extensions.swift */,
@@ -745,6 +773,8 @@
 				9232A1391D7DC8F20091157D /* CharactersTableViewControllerTests.swift in Sources */,
 				92F04E851EBDDBDC003D550A /* TestingAppDelegate.swift in Sources */,
 				9232A13F1D7EEFBE0091157D /* ThumbnailModelSpec.swift in Sources */,
+				92BE964C1EDDAD7900EE802B /* APIServiceMock.swift in Sources */,
+				92BE964E1EDDAE4B00EE802B /* AATReachabilityManagerMock.swift in Sources */,
 				9232A1421D7F11470091157D /* CharacterDataSourceSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -759,6 +789,7 @@
 				92E09BCF1D6C56D10079897F /* NSDate+Extensions.swift in Sources */,
 				92F04E661EBCE6D2003D550A /* CharactersDataController.swift in Sources */,
 				92E09BE21D6CB8DB0079897F /* UrlModel.swift in Sources */,
+				92BE96491EDDA07B00EE802B /* Result.swift in Sources */,
 				9231EBD71EB87CFC0027BCF1 /* SceneCoordinator.swift in Sources */,
 				92F04E6D1EBCE6E5003D550A /* SourceType.swift in Sources */,
 				92F04E6B1EBCE6E5003D550A /* DataSource.swift in Sources */,
@@ -783,13 +814,14 @@
 				92F04E6F1EBCE70C003D550A /* CharactersViewModel.swift in Sources */,
 				9231EBF31EB9EA2B0027BCF1 /* UIView+Extensions.swift in Sources */,
 				9231EBDD1EB893930027BCF1 /* UITableView+Extensions.swift in Sources */,
+				92BE96471EDD9D2800EE802B /* CharacterErrors.swift in Sources */,
 				9231EBF11EB9DC330027BCF1 /* PersistenceManagerType.swift in Sources */,
 				92F04E7A1EBDB895003D550A /* Reachable.swift in Sources */,
 				92F04E741EBDB3B6003D550A /* RealmConfig.swift in Sources */,
 				9231EBE81EB9D2C60027BCF1 /* ApiServiceType.swift in Sources */,
 				92F04E761EBDB45C003D550A /* RealmMigration.swift in Sources */,
 				9231EBD81EB87CFC0027BCF1 /* SceneCoordinatorType.swift in Sources */,
-				92E09BD11D6C56ED0079897F /* NSString+Extensions.swift in Sources */,
+				92E09BD11D6C56ED0079897F /* String+Extensions.swift in Sources */,
 				9231EBCA1EB87AAB0027BCF1 /* AppAppearance.swift in Sources */,
 				9231EBC81EB878FD0027BCF1 /* Utils.swift in Sources */,
 				92E09BE81D6F561E0079897F /* CharacterCell.swift in Sources */,

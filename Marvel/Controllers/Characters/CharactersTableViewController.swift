@@ -107,9 +107,7 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate {
     }
     
     fileprivate func setupSearchBar() {
-//        searchController.searchResultsUpdater = self
-//        searchController.searchBar.delegate = self
-        definesPresentationContext = true
+//        definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = searchController.searchBar
         
@@ -122,24 +120,26 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate {
                 if query != "" {
                     strongSelf.hasSearched = true
                 }
-                strongSelf.viewModel.filterContentForSearchText(searchText: query, completion: { (resultArray) in
-                    strongSelf.dataSource.dataObject = resultArray
-                    strongSelf.tableView.reloadData()
-                }, fail: { (error, defaultResultArray) in
-                    switch (error.code){
-                    case CharactersErrorCode.SearchTextEmpty.rawValue:
-                        strongSelf.dataSource.dataObject = defaultResultArray
-                        strongSelf.hasSearched = false
+                strongSelf.viewModel.filterContentForSearchText(searchText: query,
+                    completion: { resultArray in
+                        strongSelf.dataSource.dataObject = resultArray
                         strongSelf.tableView.reloadData()
-                        break;
-                    case CharactersErrorCode.SearchNoResultsFound.rawValue:
-                        strongSelf.dataSource.dataObject = CharacterDataType()
-                        strongSelf.tableView.reloadData()
-                        break;
-                    default:
-                        break;
+                    }, fail: { (error, defaultResultArray) in
+                        switch error{
+                        case CharactersError.searchTextEmpty( _):
+                            strongSelf.dataSource.dataObject = defaultResultArray
+                            strongSelf.hasSearched = false
+                            strongSelf.tableView.reloadData()
+                            break;
+                        case CharactersError.searchNoResultsFound( _):
+                            strongSelf.dataSource.dataObject = CharacterDataType()
+                            strongSelf.tableView.reloadData()
+                            break;
+                        default:
+                            break;
+                        }
                     }
-                })
+                )
             })
             .addDisposableTo(disposeBag)
     }
@@ -147,26 +147,30 @@ class CharactersTableViewController: UIViewController, UITableViewDelegate {
     // MARK: Load Methods
     
     func loadData() {
+        //TODO AAT: Change to reactive approax
         if viewModel.arrayCharacters.numberOfItems > 0 {
             self.dataSource.dataObject = self.viewModel.arrayCharacters
             self.searchController.isActive = false
             self.tableView.reloadData()
         } else {
             SVProgressHUD.show(withStatus: "Loading")
-            viewModel.loadData(success: { [weak self] _ in
-                SVProgressHUD.dismiss()
-                guard let strongSelf = self else { return }
-                strongSelf.dataSource.dataObject = strongSelf.viewModel.arrayCharacters
-                strongSelf.setupSearchBar()
-                strongSelf.tableView.reloadData()
-            }, fail:{ error in
-                SVProgressHUD.dismiss()
-                if error.code == 5000 {
-                    if let messageError = (error.userInfo[NSLocalizedFailureReasonErrorKey]! as AnyObject).description {
-                        self.showAlertMessage(title:"Error", message: messageError)
+            viewModel.loadData(
+                success: { [weak self] _ in
+                    SVProgressHUD.dismiss()
+                    guard let strongSelf = self else { return }
+                    strongSelf.dataSource.dataObject = strongSelf.viewModel.arrayCharacters
+                    strongSelf.setupSearchBar()
+                    strongSelf.tableView.reloadData()
+                }, fail: { error in
+                    SVProgressHUD.dismiss()
+                    switch error {
+                        case CharactersError.noInternet(let message):
+                            self.showAlertMessage(title: "Error", message: message)
+                        default:
+                            break;
                     }
                 }
-            })
+            )
         }
     }
     
@@ -202,39 +206,7 @@ extension CharactersTableViewController: ViewConfiguration {
     }
 }
 
-//extension CharactersTableViewController: UISearchBarDelegate {
-//    // MARK: - UISearchBar Delegate
-//    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-//        // Do nothing for the moment
-//    }
-//}
-//
-//extension CharactersTableViewController: UISearchResultsUpdating {
-//    @available(iOS 8.0, *)
-//    public func updateSearchResults(for searchController: UISearchController) {
-//        let searchBar = searchController.searchBar
-//        self.viewModel.filterContentForSearchText(searchText: searchBar.text!, completion: { (resultArray) in
-//            self.dataSource.dataObject = resultArray
-//            self.tableView.reloadData()
-//        }) { (error, defaultResultArray) in
-//            switch (error.code){
-//            case CharactersErrorCode.SearchTextEmpty.rawValue:
-//                self.dataSource.dataObject = defaultResultArray
-//                self.tableView.reloadData()
-//                break;
-//            case CharactersErrorCode.SearchNoResultsFound.rawValue:
-//                self.dataSource.dataObject = CharacterDataType()
-//                self.tableView.reloadData()
-//                break;
-//            default:
-//                break;
-//            }
-//        }
-//    }
-//}
-
-extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
-{
+extension CharactersTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     //MARK : DZNEmptyDataSetSource
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {

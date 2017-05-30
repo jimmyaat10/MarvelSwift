@@ -21,58 +21,57 @@ class CharactersDataController: CharactersDataControllerType {
         self.reachabilityManager = reachabilityManager
     }
     
-    func loadDataPersisted(success: @escaping CharactersResult, fail: @escaping CharactersError) {
+    func loadDataPersisted(completion: @escaping CharactersResult) {
         let characters = self.persistence.getPersistedCharacters()
         let hasCharacters = characters.count > 0
         
         if hasCharacters{
-            success(CharacterDataType(characters:characters))
+            completion(.success(CharacterDataType(characters:characters)))
         } else {
             // Spec: this if statement when there's no characters persisted
             // only can occur the first time the user open the APP and 
             // there's no internet connection
-            let failureReason = "Seems like you don't have internet connection and don't have data persisted!"
-            let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
-            let error = NSError(domain: "com.albertarroyo.Marvel.error", code: 5000, userInfo: userInfo)
-            fail(error)
+            completion(.failure(CharactersError.noInternet(message: "Seems like you don't have internet connection and don't have data persisted!")))
         }
     }
     
-    func loadDataFromServer(success: @escaping CharactersResult, fail: @escaping CharactersError) {
-        self.service.getCharacters(
-            success: { characters in
-                if let characters = characters {
-                    self.persistence.persistCharacters(characters: characters, success: {
+    func loadDataFromServer(completion: @escaping CharactersResult) {
+        self.service.getCharacters { charactersResult in
+            switch charactersResult {
+            case .success(let characters):
+                self.persistence.persistCharacters(characters: characters,
+                    success: {
                         let charactersPersisted = self.persistence.getPersistedCharacters()
-                        success(CharacterDataType(characters: charactersPersisted))
+                    	completion(.success(CharacterDataType(characters: charactersPersisted)))
                     }, fail: { (error) in
-                        fail(error)
-                    })
-                }
-            }, fail: { error in
-                fail(error)
+                        completion(.failure(error))
+                    }
+                )
+            case .failure(let error):
+                completion(.failure(error))
             }
-        )
+        }
     }
     
-    func loadData(success: @escaping CharactersResult, fail: @escaping CharactersError) {
-        
+    func loadData(completion: @escaping CharactersResult) {
         if self.reachabilityManager.isReachable() {
-            loadDataFromServer(
-                success: { characters in
-                    success(characters)
-                }, fail: { error in
-                    fail(error)
+            loadDataFromServer { result in
+                switch result {
+                case .success(let characters):
+                    completion(.success(characters))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
-            )
+            }
         } else {
-            loadDataPersisted(
-                success: { characters in
-                    success(characters)
-                }, fail: { error in
-                    fail(error)
+            loadDataPersisted { result in
+                switch result {
+                case .success(let characters):
+                    completion(.success(characters))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
-            )
+            }
         }
         
         //if the connection status change
@@ -81,17 +80,16 @@ class CharactersDataController: CharactersDataControllerType {
             case .notReachable:
                 break
             case .reachable(_), .unknown:
-                self.loadDataFromServer(
-                    success: { characters in
-                        success(characters)
-                    }, fail: { error in
-                        fail(error)
+                self.loadDataFromServer { result in
+                    switch result {
+                    case .success(let characters):
+                        completion(.success(characters))
+                    case .failure(let error):
+                        completion(.failure(error))
                     }
-                )
-                break
+                }
             }
         }
-        
         self.reachabilityManager.manager?.startListening()
     }
     

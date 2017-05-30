@@ -28,6 +28,7 @@ The app uses:<br><br>
  · **[Dependency injection](http://artsy.github.io/blog/2016/06/27/dependency-injection-in-swift/) + Protocols** to easy structure the code and mock the tests<br>
  · **[Data Controllers](https://speakerdeck.com/esttorhe/mvvm-plus-rxswift-plus-datacontrollers-1)** to comunicate ApiService and ViewModel<br>
  · **[RxSwift](http://cocoapods.org/pods/RxSwift)** for the searchBar inspired by [RxSwift Examples](http://www.thedroidsonroids.com/blog/ios/rxswift-by-examples-1-the-basics/) and for the Navigation (Scenes) copied by [RayWenderlich RxSwift book](https://store.raywenderlich.com/products/rxswift)<br>
+ · **[Error Handling](https://www.cocoawithlove.com/blog/2016/08/21/result-types-part-one.html)** with Result enum inspired also by [RWDevCon 2017 - 23-Swift-Error-Handling](https://store.raywenderlich.com/products/rwdevcon-2017-vault-tutorials). Also good to read: [Testing Errors](https://news.realm.io/news/testing-swift-error-type/)<br>
  · **[TDD](https://www.youtube.com/watch?v=NW_KS0o6gMY)** inspired by Essential Developer TDD series (with XCTest, [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble))<br>
  · **[AppDelegate & TestingAppDelegate](http://qualitycoding.org/app-delegate-for-tests/)** to get fast feedback in tests<br>
  · **[DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)** to show something when the view has no content<br>

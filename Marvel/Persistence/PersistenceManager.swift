@@ -26,14 +26,14 @@ final class PersistenceManager: PersistenceManagerType {
         return try! Realm(configuration: self.configuration)
     }
     
-    func persistCharacters(characters:[CharacterModel]?,
+    func persistCharacters(characters: [CharacterModel]?,
                            success: () -> Void,
                            fail: (_ error: NSError) -> Void) {
         do {
             let realm = self.realm()
             try realm.write {
-                characters.map{character in
-                    realm.add(character,update: true)
+                characters.map { character in
+                    realm.add(character, update: true)
                 }
             }
             success()

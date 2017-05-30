@@ -9,5 +9,5 @@
 import Foundation
 
 protocol ApiServiceType {
-    func getCharacters(success: @escaping ([CharacterModel]?) -> Void, fail: @escaping (_ error:NSError) -> Void)
+    func getCharacters(completion: @escaping (Result<[CharacterModel]>) -> Void ) 
 }

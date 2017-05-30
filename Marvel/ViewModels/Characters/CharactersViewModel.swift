@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum CharactersErrorCode: Int {
-    case SearchTextEmpty = 100
-    case SearchNoResultsFound = 200
-}
-
 class CharactersViewModel {
     
     private let dataController: CharactersDataControllerType
@@ -38,38 +33,31 @@ class CharactersViewModel {
         self.coordinator = coordinator
     }
     
-    func loadData(success: @escaping () -> Void,
-                  fail: @escaping (_ error: NSError) -> Void) {
-        dataController.loadData(
-            success: { characters in
+    func loadData(success: @escaping () -> Void, fail: @escaping (_ error: Error) -> Void) {
+        dataController.loadData { result in
+            switch result {
+            case .success(let characters):
                 self.arrayCharacters = characters
                 success()
-            }, fail: { error in
+            case .failure(let error):
                 fail(error)
             }
-        )
+        }
     }
     
     func filterContentForSearchText(searchText: String,
                                     completion: (CharacterDataType) -> Void,
-                                    fail:(_ error: NSError,
-                                    _ defaultResults: (CharacterDataType)) -> Void) {
+                                    fail: (_ error: Error, _ defaultResults: (CharacterDataType)) -> Void) {
         if searchText.characters.count > 0 {
             self.arraySearchCharacters = self.arrayCharacters
             self.arraySearchCharacters.filterCharacters(with: searchText)
             if self.arraySearchCharacters.numberOfItems == 0 {
-                let failureReason = "No results found"
-                let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
-                let error = NSError(domain: "com.albertarroyo.Marvel.error", code: CharactersErrorCode.SearchNoResultsFound.rawValue, userInfo: userInfo)
-                fail(error, self.arrayCharacters)
+                fail(CharactersError.searchNoResultsFound(message: "No results found"), self.arrayCharacters)
             } else {
                 completion(self.arraySearchCharacters)
             }
         } else {
-            let failureReason = "Search text empty"
-            let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
-            let error = NSError(domain: "com.albertarroyo.Marvel.error", code: CharactersErrorCode.SearchTextEmpty.rawValue, userInfo: userInfo)
-            fail(error, self.arrayCharacters)
+            fail(CharactersError.searchTextEmpty(message: "Search text empty"), self.arrayCharacters)
         }
     }
 }
